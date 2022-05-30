@@ -1,5 +1,8 @@
 # expensetracker-frontend
 
+[![CI](https://github.com/anagarlau/expensetracker-frontend/actions/workflows/ci.yml/badge.svg)](https://github.com/anagarlau/expensetracker-frontend/actions/workflows/ci.yml)
+
+
 ## Project setup
 ```
 npm install
