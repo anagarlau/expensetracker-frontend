@@ -1,51 +1,48 @@
 <template>
+  <router-view
+    v-if="token"
+    :is-logged-in="isLoggedIn"
+  />
 
-  <nav-bar v-if="token" ></nav-bar>
-  <router-view v-if="token"> </router-view>
-  <user-auth v-else> </user-auth>
-
+  <user-auth v-else />
 </template>
 
 <script>
 
 import UserAuth from '@/components/AuthComp/UserAuth'
-import NavBar from '@/components/NavBar'
+
+
 export default {
-  components: { UserAuth, NavBar },
+  components: { UserAuth },
   provide (){
     return {
-      setLoggedIn: this.setLoggedIn,
-      loggedInStatus: this.loggedInStatus
+      setLoggedIn: this.setLoggedIn
     }
   },
   data (){
     return {
-      isLoggedIn: false,
-      token: ''
+      token: localStorage.getItem('user')
     }
   },
-  mounted () {
-    if (localStorage.getItem('user')) {
-      this.token = localStorage.getItem('user')
-      this.isLoggedIn = true
+  computed: {
+    isLoggedIn () {
+      /* must be truthy */
+      if (localStorage.getItem('user') != null){
+        this.setLoggedIn(localStorage.getItem('user'))
+        return localStorage.getItem('user').length > 0 || this.token.length > 0
+      } else {
+        return false
+      }
     }
   },
   watch: {
     token (newToken) {
       localStorage.setItem('user', newToken)
-    },
-    isLoggedIn (){
-      this.isLoggedIn = this.token.length > 0
     }
   },
   methods: {
-    setLoggedIn (val, token) {
-      console.log('loggedInVal in Home post Event ' + val)
-      this.isLoggedIn = val
+    setLoggedIn (token) {
       this.token = token
-    },
-    loggedInStatus (){
-      return this.token && this.isLoggedIn
     }
   }
 }

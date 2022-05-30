@@ -1,5 +1,6 @@
 <template>
-  <form @submit.prevent="submitForm" >
+  <h1> {{msg}}  </h1>
+  <form @submit.prevent="submitForm">
     <div class="mb-3 row">
       <label
         for="email"
@@ -32,14 +33,13 @@
       <button
         type="submit"
         class="btn btn-primary mb-3"
-        >
+      >
         {{ submitButtonCaption }}
       </button>
       <button
         type="submit"
         class="btn mb-3"
         mode="flat"
-
       >
         {{ switchModeCaption }}
       </button>
@@ -52,6 +52,11 @@
 
 export default {
   inject: ['setLoggedIn'],
+  provide () {
+    return {
+      token: this.jwttoken
+    }
+  },
   data () {
     return {
       email: '',
@@ -59,14 +64,8 @@ export default {
       formIsValid: true,
       mode: 'login',
       jwttoken: '',
-      loggedIn: false
+      msg: 'Welcome to Auth'
 
-    }
-  },
-  provide () {
-    return {
-      token: this.jwttoken,
-      loggedIn: this.loggedIn
     }
   },
   computed: {
@@ -110,13 +109,12 @@ export default {
           console.log(this.jwttoken)
           localStorage.setItem('user', this.jwttoken)
           if (this.jwttoken.length > 0) {
-            this.loggedIn = true
             this.$router.push('/')
           } else {
             console.log('not logged in')
           }
-          this.setLoggedIn(this.loggedIn, this.jwttoken)
-          console.log('Logged In in Form ' + this.loggedIn)
+          this.setLoggedIn(this.jwttoken)
+          console.log('Logged In in Form ' + this.jwttoken)
         })
       }
 
