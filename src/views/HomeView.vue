@@ -1,21 +1,24 @@
 <template>
-  <nav-bar />
-  <div class="home">
-    <img
-      alt="Vue logo"
-      src="../assets/logo.png"
-    >
-    <ul>
-      <li
-        v-for="transaction in transactions"
-        :key="transaction.id"
+  <div>
+    <nav-bar />
+    <div class="home">
+      <img
+        alt="Vue logo"
+        src="../assets/logo.png"
       >
-        {{ transaction.transactionDescription }}
-      </li>
-    </ul>
+      <ul>
+        <li
+          v-for="transaction in transactions"
+          :key="transaction.id"
+        >
+          {{ transaction.transactionDescription }}
+        </li>
+      </ul>
 
-    <div />
+      <div />
+    </div>
   </div>
+
 </template>
 
 <script>
@@ -34,14 +37,8 @@ export default {
     }
   },
   mounted(){
-    console.log("MOUNTED")
-    console.log(this.isLoggedIn)
-    if (this.isLoggedIn) {
       this.getTransactions()
-    } else {
-      console.log(this.transactions)
-      console.log("You are not logged in")
-    }
+
   },
     methods:{
     getTransactions(){

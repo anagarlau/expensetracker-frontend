@@ -31,40 +31,36 @@
     </div>
     <div class="col-sm-3">
       <button
-        type="submit"
-        class="btn btn-primary mb-3"
+         class="btn btn-primary mb-3"
       >
         {{ submitButtonCaption }}
       </button>
       <button
-        type="submit"
+        type="button"
         class="btn mb-3"
         mode="flat"
+        @click="switchAuthMode"
       >
         {{ switchModeCaption }}
       </button>
     </div>
   </form>
+
 </template>
 
 <script>
 
 
 export default {
-  inject: ['setLoggedIn'],
-  provide () {
-    return {
-      token: this.jwttoken
-    }
-  },
+
   data () {
     return {
       email: '',
       password: '',
       formIsValid: true,
       mode: 'login',
-      jwttoken: '',
-      msg: 'Welcome to Auth'
+      msg: 'Welcome to Auth',
+      error: ''
 
     }
   },
@@ -78,57 +74,95 @@ export default {
     },
     switchModeCaption () {
       if (this.mode === 'login') {
-        return 'Register now'
+        return 'Register Now!'
       } else {
-        return 'Login'
+        return 'Already have an account? Click here to login'
       }
     }
   },
   methods: {
     submitForm () {
-      if (this.email === '' || !this.email.includes('@') || this.password.length < 5) {
-        this.formIsValid = false
-      } else {
-        this.formIsValid = true
-        const loginObj = {email: this.email, password: this.password}
-        /* https://stackoverflow.com/questions/11492325/post-json-fails-with-415-unsupported-media-type-spring-3-mvc */
-        fetch('https://expensetracker22.herokuapp.com/login',
-          {
-            method: 'POST',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json'
-            },
-            credentials: 'include',
-            body: JSON.stringify(loginObj)
-          }).then((response) => {
-          console.log(response)
-          return response.json()
-        }).then((data) => {
-          this.jwttoken = data.jwtToken
-          console.log(this.jwttoken)
-          localStorage.setItem('user', this.jwttoken)
-          if (this.jwttoken.length > 0) {
-            this.$router.push('/')
-          } else {
-            console.log('not logged in')
-          }
-          this.setLoggedIn(this.jwttoken)
-          console.log('Logged In in Form ' + this.jwttoken)
-        })
-      }
+        const loginObj = this.validateInput()
 
-
-      // http req https://expensetracker22.herokuapp.com/login
-    },
+       if(loginObj === null) return
+       console.log(this.mode)
+        if(this.mode === 'login') return this.login(loginObj)
+        if(this.mode === 'register'){
+            return this.signUp(loginObj)
+        }
+      },
     switchAuthMode () {
       if (this.mode === 'login') {
-        this.mode = 'signup'
+        this.mode = 'register'
       } else {
         this.mode = 'login'
       }
+      console.log("auth mode " + this.mode)
+    },
+
+    validateInput (){
+      if (this.email === '' || !this.email.includes('@') || this.password.length < 5) {
+        console.log("invalid input")
+        return null
+      }else{
+        console.log("obj is valid")
+        const obj = {email: this.email, password: this.password}
+        return obj
+      }
+    },
+    login (loginObj){
+      fetch(`https://expensetracker22.herokuapp.com/login`,
+        {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+          credentials: 'include',
+          body: JSON.stringify(loginObj)
+        }).then((response) => {
+        if(response.ok){
+           return response.json()
+        }else{
+           throw new Error("Wrong Credentials")
+        }
+
+
+      }).then((data) => {
+
+        console.log("Token from Backend " + data.jwtToken)
+        localStorage.setItem('user', data.jwtToken)
+        this.$router.push('/')
+      })
+        .catch((e) => {
+          console.log(e)
+          this.error = e
+        })
+    },
+    signUp (loginObj){
+      fetch('https://expensetracker22.herokuapp.com/register',
+        {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(loginObj)
+        }).then((response) => {
+          if(response.ok) {
+            return response.json()
+          }else{
+            throw new Error("Signup failed miserably")
+          }
+      }).then((data) => {
+          this.login(loginObj)
+      }).catch((e) => console.log(e))
+
     }
-  }
+
+    }
+
+
 }
 </script>
 
