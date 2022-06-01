@@ -24,7 +24,9 @@ module.exports = {
     'padded-blocks': 0,
     'arrow-spacing': 0,
     'no-unused-vars': 0,
-    'spaced-comment': 0
+    'spaced-comment': 0,
+    'space-infix-ops': 0,
+    'no-useless-return': 0
 
   },
   overrides: [

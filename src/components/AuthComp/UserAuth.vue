@@ -1,4 +1,5 @@
 <template>
+<!--  load dialogue with loading spinner and error message-->
   <h1> {{msg}}  </h1>
   <form @submit.prevent="submitForm">
     <div class="mb-3 row">
@@ -29,6 +30,7 @@
         >
       </div>
     </div>
+     <p v-if="!formIsValid">Please enter valid credentials </p>
     <div class="col-sm-3">
       <button
          class="btn btn-primary mb-3"
@@ -51,16 +53,19 @@
 <script>
 
 
+import mapActions from 'vuex/dist/vuex.mjs'
+
 export default {
 
   data () {
     return {
+      msg: 'Welcome to Auth',
       email: '',
       password: '',
       formIsValid: true,
       mode: 'login',
-      msg: 'Welcome to Auth',
-      error: ''
+      error: "",
+      isLoading: false
 
     }
   },
@@ -81,15 +86,33 @@ export default {
     }
   },
   methods: {
-    submitForm () {
-        const loginObj = this.validateInput()
 
-       if(loginObj === null) return
-       console.log(this.mode)
-        if(this.mode === 'login') return this.login(loginObj)
-        if(this.mode === 'register'){
-            return this.signUp(loginObj)
+    async submitForm () {
+      this.formIsValid=true
+      if (this.email === '' || !this.email.includes('@') || this.password.length < 5) {
+        console.log("invalid input")
+        this.formIsValid=false
+        return
+      }
+        console.log("obj is valid")
+        //send http request
+        //control the type of http request via this.mode
+        this.isLoading = true
+        const obj = {email: this.email, password: this.password}
+        try{
+          if(this.mode === 'login') {
+            //
+          }else{
+            await this.$store.dispatch('signup', obj)
+          }
+        }catch(error){
+          console.log("Error " + error.message)
+
         }
+
+
+        this.isLoading=false
+
       },
     switchAuthMode () {
       if (this.mode === 'login') {
@@ -97,67 +120,7 @@ export default {
       } else {
         this.mode = 'login'
       }
-      console.log("auth mode " + this.mode)
-    },
-
-    validateInput (){
-      if (this.email === '' || !this.email.includes('@') || this.password.length < 5) {
-        console.log("invalid input")
-        return null
-      }else{
-        console.log("obj is valid")
-        const obj = {email: this.email, password: this.password}
-        return obj
-      }
-    },
-    login (loginObj){
-      fetch(`https://expensetracker22.herokuapp.com/login`,
-        {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-          },
-          credentials: 'include',
-          body: JSON.stringify(loginObj)
-        }).then((response) => {
-        if(response.ok){
-           return response.json()
-        }else{
-           throw new Error("Wrong Credentials")
-        }
-
-
-      }).then((data) => {
-
-        console.log("Token from Backend " + data.jwtToken)
-        localStorage.setItem('user', data.jwtToken)
-        this.$router.push('/')
-      })
-        .catch((e) => {
-          console.log(e)
-          this.error = e
-        })
-    },
-    signUp (loginObj){
-      fetch('https://expensetracker22.herokuapp.com/register',
-        {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(loginObj)
-        }).then((response) => {
-          if(response.ok) {
-            return response.json()
-          }else{
-            throw new Error("Signup failed miserably")
-          }
-      }).then((data) => {
-          this.login(loginObj)
-      }).catch((e) => console.log(e))
-
+      console.log("auth mode method: " + this.mode)
     }
 
     }
