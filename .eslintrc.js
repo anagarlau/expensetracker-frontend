@@ -22,7 +22,10 @@ module.exports = {
     'keyword-spacing': 0,
     'no-trailing-spaces': 0,
     'padded-blocks': 0,
-    'arrow-spacing': 0
+    'arrow-spacing': 0,
+    'no-unused-vars': 0,
+    'spaced-comment': 0
+
   },
   overrides: [
     {
