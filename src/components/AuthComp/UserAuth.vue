@@ -52,9 +52,6 @@
 
 <script>
 
-
-import mapActions from 'vuex/dist/vuex.mjs'
-
 export default {
 
   data () {
