@@ -45,7 +45,7 @@ const store = createStore({
             Accept: 'application/json',
             'Content-Type': 'application/json'
           },
-          credentials: 'include',
+
           body: JSON.stringify({
             email: payload.email,
             password: payload.password
@@ -71,8 +71,7 @@ const store = createStore({
             Accept: 'application/json',
             'Content-Type': 'application/json'
           },
-          credentials: 'include',
-          body: JSON.stringify({
+            body: JSON.stringify({
             email: payload.email,
             password: payload.password
           })
