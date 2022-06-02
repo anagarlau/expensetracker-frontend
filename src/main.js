@@ -40,6 +40,7 @@ const store = createStore({
         const resp = await fetch(`https://expensetracker22.herokuapp.com/login`,
         {
           method: 'POST',
+          mode: 'cors',
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'
@@ -65,6 +66,7 @@ const store = createStore({
       const resp = await fetch(`https://expensetracker22.herokuapp.com/register`,
         {
           method: 'POST',
+          mode: 'cors',
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'
