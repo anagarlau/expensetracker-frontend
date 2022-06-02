@@ -48,7 +48,7 @@ export default {
     getTransactions(){
        console.log("Token " + this.$store.getters.token);
        console.log("Email " + this.$store.getters.email)
-      fetch('https://expensetracker22.herokuapp.com/api/v1/transactions',
+      fetch(`https://expensetracker22.herokuapp.com/api/v1/transactions`,
         {method: 'GET',
           headers: {
             'Authorization': this.$store.getters.token,
