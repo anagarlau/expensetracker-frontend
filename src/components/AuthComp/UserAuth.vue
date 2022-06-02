@@ -1,7 +1,7 @@
 <template>
 <!--  load dialogue with loading spinner and error message-->
   <h1> {{msg}}  </h1>
-  <h1> {{this.$store.getters.token}}</h1>
+
   <form @submit.prevent="submitForm">
     <div class="mb-3 row">
       <label
