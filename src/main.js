@@ -12,7 +12,7 @@ const store = createStore({
     return {
       user: {
         token: localStorage.getItem('user') || null,
-        email: null
+        email: localStorage.getItem('email') || null
       }
 
     }
@@ -30,12 +30,14 @@ const store = createStore({
   getters: {
     token(state){
       return 'Bearer ' + state.user.token
+    },
+    email(state){
+      return state.user.email
     }
   },
   actions: {
     async login (context, payload) {
-      console.log("LOGIN")
-      const resp = await fetch(`https://expensetracker22.herokuapp.com/login`,
+        const resp = await fetch(`https://expensetracker22.herokuapp.com/login`,
         {
           method: 'POST',
           headers: {
@@ -55,6 +57,8 @@ const store = createStore({
       }
       context.commit('setToken', {token: data.jwtToken, email: payload.email})
       localStorage.setItem('user', this.state.user.token)
+      localStorage.setItem('email', this.state.user.email)
+      console.log("Set Email " + this.state.user.email)
       router.push("/")
       },
    async signup (context, payload) {
@@ -79,7 +83,14 @@ const store = createStore({
      }
      context.commit('setToken', {token: data.jwtToken, email: payload.email})
      localStorage.setItem('user', this.state.user.token)
+     localStorage.setItem('email', this.state.user.email)
      router.push("/")
+    },
+    logout(context){
+      localStorage.removeItem('user')
+      localStorage.removeItem('email')
+      context.commit('setToken', {token: null, email: null})
+      router.push('/auth')
     }
   }
 

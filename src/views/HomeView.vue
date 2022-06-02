@@ -26,8 +26,7 @@
 // @ is an alias to /src
 import NavBar from '@/components/NavBar.vue'
 export default {
-  name: 'HomeView',
-  props: ['isLoggedIn'],
+
   components: {
     NavBar
   },
@@ -48,10 +47,11 @@ export default {
     methods:{
     getTransactions(){
        console.log("Token " + this.$store.getters.token);
+       console.log("Email " + this.$store.getters.email)
       fetch('https://expensetracker22.herokuapp.com/api/v1/transactions',
         {method: 'GET',
           headers: {
-            'Authorization': this.header,
+            'Authorization': this.$store.getters.token,
             'Content-Type': 'application/json',
           },
 
