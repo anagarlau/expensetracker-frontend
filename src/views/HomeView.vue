@@ -36,17 +36,22 @@ export default {
       transactions: []
     }
   },
+  computed:{
+    header(){
+      return this.$store.getters.token
+    }
+  },
   mounted(){
       this.getTransactions()
 
   },
     methods:{
     getTransactions(){
-     // console.log(localStorage.getItem("user"));
+       console.log("Token " + this.$store.getters.token);
       fetch('https://expensetracker22.herokuapp.com/api/v1/transactions',
         {method: 'GET',
           headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem("user"),
+            'Authorization': this.header,
             'Content-Type': 'application/json',
           },
 

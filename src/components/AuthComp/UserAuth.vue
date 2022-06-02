@@ -1,6 +1,7 @@
 <template>
 <!--  load dialogue with loading spinner and error message-->
   <h1> {{msg}}  </h1>
+  <h1> {{this.$store.getters.token}}</h1>
   <form @submit.prevent="submitForm">
     <div class="mb-3 row">
       <label
@@ -30,6 +31,7 @@
         >
       </div>
     </div>
+    <p v-if="error"> {{error}} </p>
      <p v-if="!formIsValid">Please enter valid credentials </p>
     <div class="col-sm-3">
       <button
@@ -61,7 +63,7 @@ export default {
       password: '',
       formIsValid: true,
       mode: 'login',
-      error: "",
+      error: null,
       isLoading: false
 
     }
@@ -86,30 +88,27 @@ export default {
 
     async submitForm () {
       this.formIsValid=true
+      this.error=null
       if (this.email === '' || !this.email.includes('@') || this.password.length < 5) {
         console.log("invalid input")
         this.formIsValid=false
         return
       }
         console.log("obj is valid")
-        //send http request
-        //control the type of http request via this.mode
         this.isLoading = true
         const obj = {email: this.email, password: this.password}
-        try{
-          if(this.mode === 'login') {
-            //
-          }else{
-            await this.$store.dispatch('signup', obj)
+
+          try{
+            if(this.mode === 'login') {
+              await this.$store.dispatch('login', obj)
+            }else{
+              await this.$store.dispatch('signup', obj)
+            }
+          }catch(err){
+            this.error=err.message
+            console.log(this.error)
           }
-        }catch(error){
-          console.log("Error " + error.message)
-
-        }
-
-
-        this.isLoading=false
-
+            this.isLoading=false
       },
     switchAuthMode () {
       if (this.mode === 'login') {

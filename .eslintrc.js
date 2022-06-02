@@ -26,7 +26,10 @@ module.exports = {
     'no-unused-vars': 0,
     'spaced-comment': 0,
     'space-infix-ops': 0,
-    'no-useless-return': 0
+    'no-useless-return': 0,
+    'key-spacing': 0,
+    'space-before-function-paren': 0,
+    'block-spacing': 0
 
   },
   overrides: [
