@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import AboutView from '../views/AboutView.vue'
 import TransactionsView from '@/views/TransactionsView'
-import UserAuth from '@/components/AuthComp/UserAuth'
+import UserAuth from '@/components/UserAuth'
 const routes = [
   {
     path: '/',
