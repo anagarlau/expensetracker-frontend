@@ -50,6 +50,7 @@ export default {
        console.log("Email " + this.$store.getters.email)
       fetch(`https://expensetracker22.herokuapp.com/api/v1/transactions`,
         {method: 'GET',
+          mode: 'cors',
           headers: {
             'Authorization': this.$store.getters.token,
             'Content-Type': 'application/json',

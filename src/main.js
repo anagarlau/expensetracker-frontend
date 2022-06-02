@@ -42,8 +42,7 @@ const store = createStore({
           method: 'POST',
           mode: 'cors',
           headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
+               'Content-Type': 'application/json'
           },
 
           body: JSON.stringify({
@@ -68,8 +67,7 @@ const store = createStore({
           method: 'POST',
           mode: 'cors',
           headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
+              'Content-Type': 'application/json'
           },
             body: JSON.stringify({
             email: payload.email,
