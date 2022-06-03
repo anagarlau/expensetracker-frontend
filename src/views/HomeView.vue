@@ -1,38 +1,43 @@
 <template>
-  <div>
-    <nav-bar />
-    <div class="home">
-      <img
-        alt="Vue logo"
-        src="../assets/logo.png"
-      >
-      <ul>
-        <li
-          v-for="transaction in transactions"
-          :key="transaction.id"
-        >
-          {{ transaction.transactionDescription }}
-        </li>
-      </ul>
 
-      <div />
-    </div>
-  </div>
 
+  <div >
+    <table class="table table-hover" id="datatable" data-mdb-selectable="true" data-mdb-multi="true">
+      <thead>
+      <tr>
+        <th class="th-sm"> Col1 </th>
+        <th class="th-sm">Col2</th>
+        <th class="th-sm">Col3</th>
+        <th class="th-sm">Col4</th>
+
+      </tr>
+      </thead>
+      <tbody>
+      <table-row v-for="transaction in transactions" :key="transaction.id" :transaction="transaction" @click="openModal">  </table-row>
+      <table-modal v-if="modal"  ></table-modal>
+      </tbody>
+    </table>
+
+
+</div>
 </template>
 
 <script>
 /* eslint-disable */
 // @ is an alias to /src
-import NavBar from '@/components/NavBar.vue'
+import TableModal from '@/components/TableModal'
+import TableRow from '@/components/TableRow'
 export default {
 
   components: {
-    NavBar
+    TableRow,
+    TableModal
+
   },
   data(){
     return {
-      transactions: []
+      transactions: [],
+      modal: false
     }
   },
   computed:{
@@ -64,7 +69,18 @@ export default {
 
       })
     },
+      openModal(){
+        console.log("hi")
+        this.modal = true
+        console.log(this.modal)
+      }
 
   }
 }
 </script>
+
+<style scoped>
+
+
+
+</style>
