@@ -9,8 +9,7 @@
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
           <p> {{ email }} </p>
-          <router-link class="nav-link" to="/">Home</router-link>
-          <router-link class="nav-link"  to="/about"></router-link>
+          <router-link class="nav-link"  to="/dashboard">Dashboard</router-link>
           <router-link class="nav-link" to="/transactions">Transactions</router-link>
 <!--          <a class="nav-link active" aria-current="page" href="#">Home</a>-->
 <!--          <a class="nav-link" href="#">About</a>-->

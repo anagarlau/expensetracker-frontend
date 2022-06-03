@@ -6,11 +6,20 @@
     <td> {{transaction.category.categoryName}}</td>
 
   </tr>
+
 </template>
 
 <script>
+import TableModal from '@/components/TableModal'
 export default {
-  props: ['transaction']
+  components: {},
+  props: ['transaction'],
+  data(){
+    return{
+
+    }
+  }
+
 
 
 }

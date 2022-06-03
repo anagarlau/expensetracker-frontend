@@ -1,24 +1,27 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import AboutView from '../views/AboutView.vue'
+import DashboardView from '../views/DashboardView.vue'
 import TransactionsView from '@/views/TransactionsView'
 import UserAuth from '@/components/UserAuth'
+import TableModal from '@/components/TableModal'
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView,
-    props: true
+    redirect: 'transactions'
   },
   {
-    path: '/about',
-    name: 'about',
-    component: AboutView
+    path: '/dashboard',
+    name: 'dashboard',
+    component: DashboardView
   },
   {
     path: '/transactions',
     name: 'transactions-view',
-    component: TransactionsView
+    component: HomeView,
+    children : [
+      // {path: '/transactions/:id', name: 'transaction', component: TableModal, props: true}
+    ]
   },
   {
     path: '/auth',
