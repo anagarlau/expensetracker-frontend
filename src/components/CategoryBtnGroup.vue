@@ -18,6 +18,7 @@
 <script>
 export default {
   name: 'CategoryBtnGroup',
+  emits: ['select-category'],
   data(){
     return {
       catMode: 'expenses',
@@ -31,8 +32,10 @@ export default {
       this.fetchCategories()
     },
     changeCategory (event) {
-      this.selectedCategory = this.categories[event.target.options[event.target.options.selectedIndex].value]
+      const cid = event.target.options[event.target.options.selectedIndex].value
+     this.selectedCategory = this.categories.find(cat=>cat.cid=== parseInt(cid))
       console.log(this.selectedCategory)
+      this.$emit('select-category', this.selectedCategory)
     },
     async fetchCategories(){
       const header = {
