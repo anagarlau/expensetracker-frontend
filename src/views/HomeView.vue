@@ -88,9 +88,8 @@ export default {
       this.categories = categories;
      },
       openModal(id){
-        console.log(id)
-        let clickedTransaction= this.transactions.find((tr)=> tr.id === id)
-        this.rowClicked = clickedTransaction
+        console.log("Modal " + id)
+        this.rowClicked =  this.transactions.find((tr)=> tr.id === id)
         this.modal = true
         console.log(this.modal)
 
@@ -111,7 +110,9 @@ export default {
       const response = await (fetch(`https://expensetracker22.herokuapp.com/api/v1/transactions/${id}`, header))
        if(response.ok){
          console.log("Deleted " + id )
+         //the faster way...
          this.transactions = this.transactions.filter((t) => t.id !== id)
+        // this.getTransactions()
        }else{
          alert("NOOOO")
        }
@@ -119,6 +120,8 @@ export default {
 
   }
 }
+
+
 </script>
 
 <style scoped>

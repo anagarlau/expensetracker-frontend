@@ -1,17 +1,26 @@
 <template>
 
-  <transition name="modal">
-  <div >
-    <div id="modal-clickable-rows" aria-hidden="true" class="modal-backdrop" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="modal-header-clickable-rows"> {{clickedTransaction.transactionDescription}}</h5>
-            <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close" @click="close"></button>
-          </div>
+  <modal-wrapper>
           <div class="modal-body mt-4 mb-5" id="modal-body-clickable-rows">
-            <p> {{clickedTransaction.transactionDate}}</p>
+<!--            <p> {{clickedTransaction.transactionDate}}</p>-->
+<!--            <p> {{clickedTransaction.transactionDescription}}</p>-->
+            <div class="md-form mb-5">
+              <Datepicker format="dd-MM-yyyy" dayPicker  v-model="date"></Datepicker>
+              <p> {{date}}</p>
             </div>
+            <div class="md-form mb-5">
+              <i class="fas fa-user prefix grey-text"></i>
+              <input type="text" id="form34" class="form-control validate">
+              <label data-error="wrong" data-success="right" for="form34">Your name</label>
+            </div>
+
+            <div class="md-form mb-5">
+              <i class="fas fa-envelope prefix grey-text"></i>
+              <input type="email" id="form29" class="form-control validate">
+              <label data-error="wrong" data-success="right" for="form29">Your email</label>
+            </div>
+
+          </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary">
               Edit
@@ -22,23 +31,23 @@
               <i class="fa fa-arrow-right ms-2"></i>
             </button>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  </transition>
+  </modal-wrapper>
 </template>
 
 <script>
+import ModalWrapper from '@/components/ModalWrapper'
+import Datepicker from '@vuepic/vue-datepicker'
+import '@vuepic/vue-datepicker/dist/main.css'
 export default {
   name: 'TableModal',
+  components: { ModalWrapper, Datepicker},
   props: ['clickedTransaction'],
-  emits: ['close-modal'],
   inject: ['deleteTransaction'],
   data(){
     return{
       expenseCategories: [],
-      incomeCategories: []
+      incomeCategories: [],
+      date : new Date(this.clickedTransaction.transactionDate).toISOString().slice(0,10)
     }
   },
   computed: {
@@ -46,10 +55,14 @@ export default {
       return this.expenseCategories.map((cat)=>cat.categoryName)
     }
   },
+  watch :{
+    date(newVal){
+     this.date = new Date(newVal).toISOString().slice(0,10)
+      console.log(this.date)
+    }
+  },
   methods: {
-    close(){
-      this.$emit('close-modal')
-    },
+
     async fetchExpenseCategories(){
       const header = {
         method: 'GET',
@@ -83,11 +96,14 @@ export default {
    mounted(){
     this.fetchExpenseCategories()
     this.fetchIncomeCategories()
+
   }
 
 }
 </script>
 
-<style scoped>
+<style>
+
+
 
 </style>
