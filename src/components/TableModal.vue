@@ -67,6 +67,8 @@ export default {
   methods: {
     updateCategory(newCategory){
       this.startCategory = newCategory
+      console.log("updateCate")
+      console.log(this.startCategory)
     }
 
   }

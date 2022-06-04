@@ -4,8 +4,8 @@
     <button  class="btn btn-lg btn-outline-primary" @click="switchCategory('EXPENSE')">Expense</button>
     <button class="btn  btn-lg btn-outline-primary" @click="switchCategory('INCOME')">Income</button>
   </div>
-  <div class="md-form mb-5 btn-block dropdown"  ref="opt">
-    <select  class="form-select" v-model="selected" >
+  <div class="md-form mb-5 btn-block dropdown" >
+    <select  class="form-select" v-model="selected" ref="opt" @change="changeS">
       <option disabled  > {{currCategory.categoryName}}  </option>
       <option v-for="cat in currCategories" :value="cat.cid" :key="cat.cid" >{{ cat.categoryName }}</option>
     </select>
@@ -41,7 +41,7 @@ export default {
 
     },
   methods:{
-    switchCategory(cat){
+      switchCategory(cat){
        this.catMode=cat
      },
     fetchCategories(){
