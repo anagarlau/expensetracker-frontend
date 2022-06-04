@@ -1,8 +1,8 @@
 <template>
 
   <div class="md-form mb-5 btn-block" role="group">
-    <button  class="btn btn-lg btn-outline-primary" @click="switchCategory('EXPENSE')">Expense</button>
-    <button class="btn  btn-lg btn-outline-primary" @click="switchCategory('INCOME')">Income</button>
+    <button  class="btn btn-lg btn-outline-primary" :class="[isExpenseSelected ? 'active' : '']" @click="switchCategory('EXPENSE')">Expense</button>
+    <button class="btn  btn-lg btn-outline-primary" :class="[isIncomeSelected ? 'active' : '']" @click="switchCategory('INCOME')">Income</button>
   </div>
   <div class="md-form mb-5 btn-block dropdown" >
     <select  class="form-select" v-model="selected" >
@@ -19,7 +19,9 @@ export default {
   emits: ['select-category'],
   data(){
     return {
-      catMode: '',
+      catMode: this.currCategory.categoryType,
+      isExpenseSelected: this.currCategory.categoryType === 'EXPENSE',
+      isIncomeSelected: this.currCategory.categoryType === 'INCOME',
       currCategories: [],
       categories: [],
       selectedCategory : this.currCategory,
@@ -38,17 +40,10 @@ export default {
   methods:{
       switchCategory(cat){
         this.catMode=cat
-        if(cat === 'INCOME'){
-          this.currCategories = this.categories.filter(cat=>cat.categoryType === 'INCOME')
-          console.log(this.currCategories[0])
-        }else{
-          this.currCategories = this.categories.filter(cat=>cat.categoryType === 'EXPENSE')
-          console.log(this.currCategories[0])
-        }
-
-
-
-
+        this.catMode === 'EXPENSE' ? this.isExpenseSelected = true : this.isExpenseSelected = false
+        this.catMode === 'INCOME' ? this.isIncomeSelected = true : this.isIncomeSelected = false
+        this.currCategories = this.categories.filter(cat=>cat.categoryType === this.catMode)
+        console.log(this.currCategories)
      },
     fetchCategories(){
       const header = {
@@ -81,6 +76,7 @@ export default {
   },
     mounted(){
     this.fetchCategories()
+    console.log("curr category " + this.currCategory.categoryType)
   }
 }
 </script>
