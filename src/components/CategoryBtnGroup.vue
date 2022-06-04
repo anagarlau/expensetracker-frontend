@@ -5,9 +5,9 @@
     <button class="btn  btn-lg btn-outline-primary" @click="switchCategory('INCOME')">Income</button>
   </div>
   <div class="md-form mb-5 btn-block dropdown" >
-    <select  class="form-select" v-model="selected" ref="opt" @change="changeS">
-      <option disabled  > {{currCategory.categoryName}}  </option>
-      <option v-for="cat in currCategories" :value="cat.cid" :key="cat.cid" >{{ cat.categoryName }}</option>
+    <select  class="form-select" v-model="selected" >
+      <option disabled  > {{selected}}  </option>
+      <option v-for="cat in currCategories" :value="cat.categoryName" :key="cat.cid" >{{ cat.categoryName }}</option>
     </select>
   </div>
 </template>
@@ -19,30 +19,36 @@ export default {
   emits: ['select-category'],
   data(){
     return {
-      catMode: 'EXPENSE',
+      catMode: '',
+      currCategories: [],
       categories: [],
       selectedCategory : this.currCategory,
-      selected: this.currCategory.cid
+      selected: this.currCategory.categoryName
     }
   },
     watch: {
     selected(newVal){
      console.log("watcher for selected " + newVal)
      this.selected = newVal
-     this.selectedCategory = this.categories.find((cat) => cat.cid === newVal)
+     this.selectedCategory = this.categories.find((cat) => cat.categoryName === newVal)
       console.log(this.selectedCategory)
      this.$emit('select-category', this.selectedCategory)
     }
     },
-     computed:{
-      currCategories(){
-          return this.categories.filter(cat=>cat.categoryType === this.catMode)
-      }
-
-    },
   methods:{
       switchCategory(cat){
-       this.catMode=cat
+        this.catMode=cat
+        if(cat === 'INCOME'){
+          this.currCategories = this.categories.filter(cat=>cat.categoryType === 'INCOME')
+          console.log(this.currCategories[0])
+        }else{
+          this.currCategories = this.categories.filter(cat=>cat.categoryType === 'EXPENSE')
+          console.log(this.currCategories[0])
+        }
+
+
+
+
      },
     fetchCategories(){
       const header = {
@@ -64,6 +70,9 @@ export default {
       .then((data)=>{
         console.log(data)
         this.categories = data
+        this.currCategories = this.categories.filter(cat=>cat.categoryType === this.currCategory.categoryType)
+      //  console.log(this.currCategories)
+
       })
       .catch((err)=>console.log(err))
 
