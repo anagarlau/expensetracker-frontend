@@ -35,8 +35,7 @@ export default {
   data(){
     return {
       transactions: [],
-      categories: [],
-      modal: false,
+       modal: false,
       rowClicked: null
     }
   },
@@ -52,7 +51,6 @@ export default {
   },
   mounted(){
       this.getTransactions()
-      this.getCategories()
 
   },
    methods:{
@@ -75,25 +73,11 @@ export default {
 
       })
     },
-      async getCategories(){
-        const header = {method: 'GET',
-          mode: 'cors',
-          headers: {
-          'Authorization': this.$store.getters.token,
-            'Content-Type': 'application/json',
-        }
-        }
-      let response = await fetch('https://expensetracker22.herokuapp.com/api/v1/categories/all', header)
-      let categories = await response.json();
-      this.categories = categories;
-     },
       openModal(id){
         console.log("Modal " + id)
         this.rowClicked =  this.transactions.find((tr)=> tr.id === id)
         this.modal = true
-        console.log(this.modal)
-
-      },
+        },
       closeModal(){
       console.log("Trying to close modal")
         this.rowClicked=null

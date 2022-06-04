@@ -2,14 +2,14 @@
 
   <modal-wrapper>
           <div class="modal-body mt-4 mb-5" id="modal-body-clickable-rows">
-<!--            <p> {{clickedTransaction.transactionDate}}</p>-->
-<!--            <p> {{clickedTransaction.transactionDescription}}</p>-->
+            <p> {{clickedTransaction.category.cid}}</p>
+            <p> {{clickedTransaction.transactionDescription}}</p>
             <div class="md-form mb-5">
               <Datepicker format="dd-MM-yyyy" dayPicker  v-model="date"></Datepicker>
               <p> {{date}}</p>
             </div>
 
-                <category-btn-group></category-btn-group>
+                <category-btn-group :currCategory="startCategory" @select-category="updateCategory"></category-btn-group>
 
 
 
@@ -53,23 +53,21 @@ export default {
   inject: ['deleteTransaction'],
   data(){
     return{
-
+      startCategory: this.clickedTransaction.category,
       date : new Date(this.clickedTransaction.transactionDate).toISOString().slice(0,10)
     }
   },
   computed: {
-    expenseNames(){
-      return this.expenseCategories.map((cat)=>cat.categoryName)
-    }
   },
   watch :{
     date(newVal){
      this.date = new Date(newVal).toISOString().slice(0,10)
-      console.log(this.date)
-    }
+      }
   },
   methods: {
-
+    updateCategory(newCategory){
+      this.startCategory = newCategory
+    }
 
   }
 
