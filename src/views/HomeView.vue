@@ -1,6 +1,6 @@
 <template>
 
-
+  <nav-bar :balance="balance"></nav-bar>
   <div >
     <table class="table table-hover" id="datatable" data-mdb-selectable="true" data-mdb-multi="true"  >
       <thead>
@@ -9,11 +9,12 @@
         <th class="th-sm">Col2</th>
         <th class="th-sm">Col3</th>
         <th class="th-sm">Col4</th>
+        <th class="th-sm">Col5</th>
       </tr>
       </thead>
       <tbody>
       <table-row v-for="transaction in transactions" :key="transaction.id" :transaction="transaction" @click="openModal(transaction.id)" > </table-row>
-      <table-modal v-if="modal" :clickedTransaction="rowClicked" @close-modal="closeModal"></table-modal>
+      <table-modal v-if="modal" :clickedTransaction="rowClicked" @close-modal="closeModal" @update-balance="updateUI"></table-modal>
       </tbody>
     </table>
 
@@ -26,17 +27,20 @@
 // @ is an alias to /src
 import TableRow from '@/components/TableRow'
 import TableModal from '@/components/TableModal'
+import NavBar from '@/components/NavBar'
 export default {
 
   components: {
     TableRow,
-    TableModal
+    TableModal,
+    NavBar
    },
   data(){
     return {
       transactions: [],
-       modal: false,
-      rowClicked: null
+      modal: false,
+      rowClicked: null,
+      balance: 0
     }
   },
   computed:{
@@ -51,6 +55,7 @@ export default {
   },
   mounted(){
       this.getTransactions()
+      this.getBalance()
 
   },
    methods:{
@@ -73,7 +78,25 @@ export default {
 
       })
     },
-      openModal(id){
+    getBalance(){
+
+      fetch(`https://expensetracker22.herokuapp.com/api/v1/balance`,
+        {method: 'GET',
+          mode: 'cors',
+          headers: {
+            'Authorization': this.$store.getters.token,
+            'Content-Type': 'application/json',
+          },
+
+
+        }).then((response) =>{
+        return  response.json()
+      }).then((data)=>{
+        this.balance=data.balance
+
+      })
+    },
+     openModal(id){
         console.log("Modal " + id)
         this.rowClicked =  this.transactions.find((tr)=> tr.id === id)
         this.modal = true
@@ -83,15 +106,25 @@ export default {
         this.rowClicked=null
         this.modal=false
       },
+      updateUI(balance, id ,editedTransaction){
+      console.log("New Balance " + balance + " edited Transaction " )
+      console.log(this.rowClicked)
+      console.log(editedTransaction)
+      console.log(id)
+      this.balance = balance
+      this.getTransactions()
+      this.closeModal()
+
+      },
      async deleteTransaction(id){
       console.log("Attempting to delete " + id)
-       const header = {method: 'DELETE',
+       const options = {method: 'DELETE',
          mode: 'cors',
          headers: {
            'Authorization': this.$store.getters.token,
            }
        }
-      const response = await (fetch(`https://expensetracker22.herokuapp.com/api/v1/transactions/${id}`, header))
+      const response = await (fetch(`https://expensetracker22.herokuapp.com/api/v1/transactions/${id}`, options))
        if(response.ok){
          console.log("Deleted " + id )
          //the faster way...

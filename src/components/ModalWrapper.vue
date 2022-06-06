@@ -2,10 +2,11 @@
   <transition name="modal">
     <div>
       <div id="modal-clickable-rows" aria-hidden="true" class="modal-backdrop" tabindex="-1">
-        <div class="modal-dialog modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close" @click="close"></button>
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content mb-0 mt-0">
+            <div class="modal-header text-center mb-0">
+              <h4 class="modal-title mb-0 w-100 font-weight-bold">Modify Record</h4>
+              <button type="button" class="btn-close mb-0" data-mdb-dismiss="modal" aria-label="Close" @click="close"></button>
             </div>
             <slot></slot>
           </div>

@@ -4,7 +4,7 @@
     <td>{{transaction.transactionDescription}}</td>
     <td> {{transaction.transactionDate}}</td>
     <td> {{transaction.category.categoryName}}</td>
-
+    <td> {{transaction.transactionTotal}}</td>
   </tr>
 
 </template>
@@ -19,8 +19,6 @@ export default {
 
     }
   }
-
-
 
 }
 </script>

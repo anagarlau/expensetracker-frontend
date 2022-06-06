@@ -1,10 +1,10 @@
 <template>
 
-  <div class="md-form mb-5 btn-block" role="group">
+  <div class="md-form mb-2 btn-block" role="group">
     <button  class="btn btn-lg btn-outline-primary" :class="[isExpenseSelected ? 'active' : '']" @click="switchCategory('EXPENSE')">Expense</button>
     <button class="btn  btn-lg btn-outline-primary" :class="[isIncomeSelected ? 'active' : '']" @click="switchCategory('INCOME')">Income</button>
   </div>
-  <div class="md-form mb-5 btn-block dropdown" >
+  <div class="md-form mb-2 btn-block dropdown" >
     <select  class="form-select" v-model="selected" >
       <option disabled  > {{selected}}  </option>
       <option v-for="cat in currCategories" :value="cat.categoryName" :key="cat.cid" >{{ cat.categoryName }}</option>
