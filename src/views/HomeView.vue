@@ -1,11 +1,11 @@
 <template>
 
   <nav-bar :balance="balance"></nav-bar>
-  <div >
-    <table class="table table-hover" id="datatable" data-mdb-selectable="true" data-mdb-multi="true"  >
+  <div>
+    <table class="table table-hover" id="datatable" data-mdb-selectable="true" data-mdb-multi="true">
       <thead>
       <tr>
-        <th class="th-sm"> Col1 </th>
+        <th class="th-sm"> Col1</th>
         <th class="th-sm">Col2</th>
         <th class="th-sm">Col3</th>
         <th class="th-sm">Col4</th>
@@ -13,13 +13,15 @@
       </tr>
       </thead>
       <tbody>
-      <table-row v-for="transaction in transactions" :key="transaction.id" :transaction="transaction" @click="openModal(transaction.id)" > </table-row>
-      <table-modal v-if="modal" :clickedTransaction="rowClicked" @close-modal="closeModal" @update-balance="updateUI"></table-modal>
+      <table-row v-for="transaction in transactions" :key="transaction.id" :transaction="transaction"
+                 @click="openModal(transaction.id)"></table-row>
+      <table-modal v-if="modal" :clickedTransaction="rowClicked" @close-modal="closeModal"
+                   @update-balance="updateUponEdit"></table-modal>
       </tbody>
     </table>
 
 
-</div>
+  </div>
 </template>
 
 <script>
@@ -28,112 +30,97 @@
 import TableRow from '@/components/TableRow'
 import TableModal from '@/components/TableModal'
 import NavBar from '@/components/NavBar'
+
 export default {
 
   components: {
     TableRow,
     TableModal,
     NavBar
-   },
-  data(){
+  },
+  data () {
     return {
       transactions: [],
       modal: false,
-      rowClicked: null,
-      balance: 0
+      rowClicked: null
     }
   },
-  computed:{
-    header(){
+  computed: {
+    header () {
       return this.$store.getters.token
+    },
+    expenses () {
+      return this.transactions.filter(tr => tr.category.categoryType === 'EXPENSE').map(e => e.transactionTotal).reduce((a, curr) => a + curr, 0)
+    },
+    incomes () {
+      return this.transactions.filter(tr => tr.category.categoryType === 'INCOME').map(e => e.transactionTotal).reduce((a, curr) => a + curr, 0)
+    },
+    balance () {
+      return (this.incomes - this.expenses)
     }
   },
-  provide(){
-    return{
+  provide () {
+    return {
       deleteTransaction: this.deleteTransaction
     }
   },
-  mounted(){
-      this.getTransactions()
-      this.getBalance()
-
+  mounted () {
+    this.getTransactions()
   },
-   methods:{
-    getTransactions(){
-       console.log("Token " + this.$store.getters.token);
-       console.log("Email " + this.$store.getters.email)
+  methods: {
+    getTransactions () {
+      console.log('Token ' + this.$store.getters.token)
+      console.log('Email ' + this.$store.getters.email)
       fetch(`https://expensetracker22.herokuapp.com/api/v1/transactions`,
-        {method: 'GET',
+        {
+          method: 'GET',
           mode: 'cors',
           headers: {
             'Authorization': this.$store.getters.token,
             'Content-Type': 'application/json',
           },
 
-
-        }).then((response) =>{
-          return  response.json()
-      }).then((data)=>{
+        }).then((response) => {
+        if (response.ok) {
+          return response.json()
+        } else {
+          throw new Error(response.status + ' status code')
+        }
+      }).then((data) => {
         this.transactions = data
-
       })
+        .catch((err) => console.log(err))
     },
-    getBalance(){
-
-      fetch(`https://expensetracker22.herokuapp.com/api/v1/balance`,
-        {method: 'GET',
-          mode: 'cors',
-          headers: {
-            'Authorization': this.$store.getters.token,
-            'Content-Type': 'application/json',
-          },
-
-
-        }).then((response) =>{
-        return  response.json()
-      }).then((data)=>{
-        this.balance=data.balance
-
-      })
+    openModal (id) {
+      console.log('Opening Modal for ' + id)
+      this.rowClicked = this.transactions.find((tr) => tr.id === id)
+      this.modal = true
     },
-     openModal(id){
-        console.log("Modal " + id)
-        this.rowClicked =  this.transactions.find((tr)=> tr.id === id)
-        this.modal = true
-        },
-      closeModal(){
-      console.log("Trying to close modal")
-        this.rowClicked=null
-        this.modal=false
-      },
-      updateUI(balance, id ,editedTransaction){
-      console.log("New Balance " + balance + " edited Transaction " )
-      console.log(this.rowClicked)
-      console.log(editedTransaction)
-      console.log(id)
-      this.balance = balance
+    closeModal () {
+      console.log('Trying to close modal')
+      this.rowClicked = null
+      this.modal = false
+    },
+    updateUponEdit (id, editedTransaction) {
       this.getTransactions()
       this.closeModal()
-
-      },
-     async deleteTransaction(id){
-      console.log("Attempting to delete " + id)
-       const options = {method: 'DELETE',
-         mode: 'cors',
-         headers: {
-           'Authorization': this.$store.getters.token,
-           }
-       }
-      const response = await (fetch(`https://expensetracker22.herokuapp.com/api/v1/transactions/${id}`, options))
-       if(response.ok){
-         console.log("Deleted " + id )
-         //the faster way...
-         this.transactions = this.transactions.filter((t) => t.id !== id)
-        // this.getTransactions()
-       }else{
-         alert("NOOOO")
-       }
-     }
+    },
+     deleteTransaction (id) {
+      console.log('Attempting to delete ' + id)
+      const options = {
+        method: 'DELETE',
+        mode: 'cors',
+        headers: {
+          'Authorization': this.$store.getters.token,
+        }
+      }
+      fetch(`https://expensetracker22.herokuapp.com/api/v1/transactions/${id}`, options)
+       .then((res)=> {
+        if(res.ok ) {this.transactions = this.transactions.filter((t) => t.id !== id)}
+        else{throw new Error(res.status + " response status")}
+       })
+       .catch((e) => console.log(e))
+    }
 
   }
 }
@@ -142,7 +129,6 @@ export default {
 </script>
 
 <style scoped>
-
 
 
 </style>

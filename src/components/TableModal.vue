@@ -73,8 +73,6 @@ export default {
   methods: {
     updateCategory (newCategory) {
       this.startCategory = newCategory
-      console.log('updateCate')
-      console.log(this.startCategory)
     },
     editTransaction (id) {
       console.log('Upon pressing edit')
@@ -103,7 +101,7 @@ export default {
         })
         .then((data) => {
           console.log(data)
-          this.$emit('update-balance', data.balance, id ,edited)
+          this.$emit('update-balance', id ,edited)
         })
         .catch((error) => {
           console.log(error)
