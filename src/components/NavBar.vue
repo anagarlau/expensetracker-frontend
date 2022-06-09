@@ -15,7 +15,7 @@
 <!--          <a class="nav-link active" aria-current="page" href="#">Home</a>-->
 <!--          <a class="nav-link" href="#">About</a>-->
 <!--          <a class="nav-link" href="#">Expenses</a>-->
-          <p> {{balance}}</p>
+          <p> <i class="bi bi-currency-euro"></i> {{balance}}</p>
         </div>
 
       </div>

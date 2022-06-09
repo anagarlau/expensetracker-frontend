@@ -2,8 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import DashboardView from '../views/DashboardView.vue'
 import TransactionsView from '@/views/TransactionsView'
-import UserAuth from '@/components/UserAuth'
-import TableModal from '@/components/TableModal'
+import UserAuth from '@/components/AuthComponents/UserAuth'
+import TableModal from '@/components/HomeViewComponents/TableModal'
 const routes = [
   {
     path: '/',

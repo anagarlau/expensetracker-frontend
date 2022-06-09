@@ -1,34 +1,50 @@
 <template>
 
   <nav-bar :balance="balance"></nav-bar>
-  <div>
+  <div class="container justify-content-center">
+    <div class="row justify-content-center">
+      <filter-row @open-post="openPostModal"></filter-row>
+<!--        <div class="col">-->
+<!--        <button type="button"  class="btn btn-primary btn-lg btn-floating round" @click="openPostModal">-->
+<!--          <i class="bi bi-plus-lg"></i>-->
+<!--        </button>-->
+<!--      </div>-->
+    </div>
+   <post-modal :mode="modalMode" v-if="postModal" @close-modal="closeModal"></post-modal>
+  <div class="row justify-content-center">
+    <div class="col">
     <table-wrapper>
       <table-header></table-header>
       <table-body>
         <table-row v-for="transaction in transactions" :key="transaction.id" :transaction="transaction"
                    @click="openModal(transaction.id)"></table-row>
-        <table-modal v-if="modal" :clickedTransaction="rowClicked" @close-modal="closeModal"
+        <table-modal :mode="modalMode" v-if="modal" :clickedTransaction="rowClicked" @close-modal="closeModal"
                      @update-balance="updateUponEdit"></table-modal>
       </table-body>
     </table-wrapper>
-
-
+    </div>
   </div>
+  </div>
+
 </template>
 
 <script>
 /* eslint-disable */
 // @ is an alias to /src
-import TableRow from '@/components/TableRow'
-import TableModal from '@/components/TableModal'
+import TableRow from '@/components/HomeViewComponents/TableRow'
+import TableModal from '@/components/HomeViewComponents/TableModal'
 import NavBar from '@/components/NavBar'
-import TableHeader from '@/components/TableTransactionsHeader'
+import TableHeader from '@/components/HomeViewComponents/TableTransactionsHeader'
 import TableWrapper from '@/components/TableWrapper'
-import TableBody from '@/components/TableBody'
+import TableBody from '@/components/TableBodyWrapper'
+import FilterRow from '@/components/HomeViewComponents/FilterRow'
+import PostModal from '@/components/HomeViewComponents/PostModal'
 
 export default {
 
   components: {
+    PostModal,
+    FilterRow,
     TableBody,
     TableWrapper,
     TableHeader,
@@ -40,8 +56,10 @@ export default {
     return {
       transactions: [],
       modal: false,
-      rowClicked: null
-    }
+      rowClicked: null,
+      postModal: false,
+      modalMode: ''
+      }
   },
   computed: {
     header () {
@@ -59,8 +77,8 @@ export default {
   },
   provide () {
     return {
-      deleteTransaction: this.deleteTransaction
-    }
+      deleteTransaction: this.deleteTransaction,
+     }
   },
   mounted () {
     this.getTransactions()
@@ -93,12 +111,24 @@ export default {
       console.log('Opening Modal for ' + id)
       this.rowClicked = this.transactions.find((tr) => tr.id === id)
       this.modal = true
+      this.modalMode = 'edit'
     },
     closeModal () {
       console.log('Trying to close modal')
-      this.rowClicked = null
-      this.modal = false
+       if(this.modalMode === 'edit'){
+        this.rowClicked = null
+        this.modal = false
+      }
+      if(this.modalMode === 'post'){
+        this.postModal = false
+      }
+      this.modalMode = ''
     },
+    openPostModal(mode){
+      console.log("Opening Post Modal")
+      this.postModal = true
+      this.modalMode = mode
+     },
     updateUponEdit (id, editedTransaction) {
       this.getTransactions()
       this.closeModal()

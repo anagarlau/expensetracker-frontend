@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils'
-import UserAuth from '@/components/UserAuth'
+import UserAuth from '@/components/AuthComponents/UserAuth'
 
 describe('UserAuth.vue', () => {
   it('renders props.msg when passed', () => {

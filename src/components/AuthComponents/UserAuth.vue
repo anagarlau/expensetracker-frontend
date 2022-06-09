@@ -10,7 +10,7 @@
 
                   <div class="text-center">
                     <img
-                      src="../assets/android-chrome-512x512.png"
+                      src="src/assets/android-chrome-512x512.png"
                       style="width: 185px;" alt="logo">
                     <h4 class="mt-1 mb-5 pb-1">Welcome</h4>
                   </div>

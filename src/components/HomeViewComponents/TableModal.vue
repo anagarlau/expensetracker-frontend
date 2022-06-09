@@ -2,8 +2,6 @@
 
   <modal-wrapper>
     <div class="modal-body text-center mb-1" id="modal-body-clickable-rows">
-      <!--            <p> {{clickedTransaction.category.cid}}</p>-->
-      <!--            <p> {{clickedTransaction.transactionDescription}}</p>-->
       <div class="md-form mt-0 mb-2">
         <Datepicker position="left" menuClassName="dp-custom-menu" format="dd-MM-yyyy" :enableTimePicker="false"
                     v-model="date"></Datepicker>
@@ -19,7 +17,7 @@
       <!--      <input   id="form2" class="form-control validate" v-model="amount" >-->
       <div class="md-form row g-3 align-items-center">
         <div class="col-auto">
-          <label for="inputPassword6" class="col-form-label">Amount €</label>
+          <label for="inputPassword6" class="col-form-label">Amount <i class="bi bi-currency-euro"></i></label>
         </div>
         <div class="col-auto">
           <input type="number" inputmode="numeric" v-model="amount" id="inputPassword6" class="form-control">
@@ -44,7 +42,7 @@
 import ModalWrapper from '@/components/ModalWrapper'
 import Datepicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
-import CategoryBtnGroup from '@/components/CategoryBtnGroup'
+import CategoryBtnGroup from '@/components/HomeViewComponents/CategoryBtnGroup'
 
 export default {
   name: 'TableModal',

@@ -5,7 +5,7 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
           <div class="modal-content mb-0 mt-0">
             <div class="modal-header text-center mb-0">
-              <h4 class="modal-title mb-0 w-100 font-weight-bold">Modify Record</h4>
+              <h4 class="modal-title mb-0 w-100 font-weight-bold"> {{header}} </h4>
               <button type="button" class="btn-close mb-0" data-mdb-dismiss="modal" aria-label="Close" @click="close"></button>
             </div>
             <slot></slot>
@@ -19,10 +19,24 @@
 <script>
 export default {
   emits: ['close-modal'],
+  props: ['mode'],
+  computed: {
+    header(){
+      if(this.mode === 'edit'){
+        return "Modify record"
+      }else{
+        return "Add a transaction "
+      }
+    }
+  },
   methods: {
     close(){
       this.$emit('close-modal')
+
     }
+  },
+  mounted () {
+    console.log(this.mode + " prop mode ")
   }
 }
 </script>
