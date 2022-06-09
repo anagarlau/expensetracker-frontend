@@ -2,23 +2,15 @@
 
   <nav-bar :balance="balance"></nav-bar>
   <div>
-    <table class="table table-hover" id="datatable" data-mdb-selectable="true" data-mdb-multi="true">
-      <thead>
-      <tr>
-        <th class="th-sm"> Col1</th>
-        <th class="th-sm">Col2</th>
-        <th class="th-sm">Col3</th>
-        <th class="th-sm">Col4</th>
-        <th class="th-sm">Col5</th>
-      </tr>
-      </thead>
-      <tbody>
-      <table-row v-for="transaction in transactions" :key="transaction.id" :transaction="transaction"
-                 @click="openModal(transaction.id)"></table-row>
-      <table-modal v-if="modal" :clickedTransaction="rowClicked" @close-modal="closeModal"
-                   @update-balance="updateUponEdit"></table-modal>
-      </tbody>
-    </table>
+    <table-wrapper>
+      <table-header></table-header>
+      <table-body>
+        <table-row v-for="transaction in transactions" :key="transaction.id" :transaction="transaction"
+                   @click="openModal(transaction.id)"></table-row>
+        <table-modal v-if="modal" :clickedTransaction="rowClicked" @close-modal="closeModal"
+                     @update-balance="updateUponEdit"></table-modal>
+      </table-body>
+    </table-wrapper>
 
 
   </div>
@@ -30,10 +22,16 @@
 import TableRow from '@/components/TableRow'
 import TableModal from '@/components/TableModal'
 import NavBar from '@/components/NavBar'
+import TableHeader from '@/components/TableTransactionsHeader'
+import TableWrapper from '@/components/TableWrapper'
+import TableBody from '@/components/TableBody'
 
 export default {
 
   components: {
+    TableBody,
+    TableWrapper,
+    TableHeader,
     TableRow,
     TableModal,
     NavBar
@@ -105,7 +103,7 @@ export default {
       this.getTransactions()
       this.closeModal()
     },
-     deleteTransaction (id) {
+    deleteTransaction (id) {
       console.log('Attempting to delete ' + id)
       const options = {
         method: 'DELETE',
@@ -115,11 +113,14 @@ export default {
         }
       }
       fetch(`https://expensetracker22.herokuapp.com/api/v1/transactions/${id}`, options)
-       .then((res)=> {
-        if(res.ok ) {this.transactions = this.transactions.filter((t) => t.id !== id)}
-        else{throw new Error(res.status + " response status")}
-       })
-       .catch((e) => console.log(e))
+        .then((res) => {
+          if (res.ok) {
+            this.transactions = this.transactions.filter((t) => t.id !== id)
+          } else {
+            throw new Error(res.status + ' response status')
+          }
+        })
+        .catch((e) => console.log(e))
     }
 
   }
