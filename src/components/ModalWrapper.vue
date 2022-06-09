@@ -23,8 +23,10 @@ export default {
   computed: {
     header(){
       if(this.mode === 'edit'){
+        console.log("in wrapper" + this.mode)
         return "Modify record"
       }else{
+        console.log("in wrapper" + this.mode)
         return "Add a transaction "
       }
     }
@@ -46,8 +48,13 @@ export default {
   border-bottom: 0 none;
 }
 
+.modal-backdrop{
+  opacity:0.5 !important;
+}
+
 .modal-active{
   display:block;
+
 }
 
 

@@ -1,5 +1,5 @@
 <template>
-
+  <p> {{mode}}</p>
   <div class="md-form mb-2 btn-block" role="group">
     <button  class="btn btn-lg btn-outline-primary" :class="[isExpenseSelected ? 'active' : '']" @click="switchCategory('EXPENSE')">Expense</button>
     <button class="btn  btn-lg btn-outline-primary" :class="[isIncomeSelected ? 'active' : '']" @click="switchCategory('INCOME')">Income</button>
@@ -15,17 +15,18 @@
 <script>
 export default {
   name: 'CategoryBtnGroup',
-  props: ['currCategory'],
+  props: ['currCategory', 'mode'],
   emits: ['select-category'],
   data(){
     return {
-      catMode: this.currCategory.categoryType,
-      isExpenseSelected: this.currCategory.categoryType === 'EXPENSE',
-      isIncomeSelected: this.currCategory.categoryType === 'INCOME',
+      selectedCategory : this.currCategory === null ? this.selectedCategory : this.currCategory,
+      selected: this.currCategory === null ? this.selected : this.currCategory.categoryName,
+      catMode: this.currCategory === null ? 'EXPENSE' : this.currCategory.categoryType,
+      isExpenseSelected: this.currCategory === null ? true : this.currCategory.categoryType === 'EXPENSE' ,
+      isIncomeSelected: this.currCategory === null ? false : this.currCategory.categoryType === 'INCOME',
       currCategories: [],
-      categories: [],
-      selectedCategory : this.currCategory,
-      selected: this.currCategory.categoryName
+      categories: []
+
     }
   },
     watch: {
@@ -65,8 +66,16 @@ export default {
       .then((data)=>{
         console.log(data)
         this.categories = data
-        this.currCategories = this.categories.filter(cat=>cat.categoryType === this.currCategory.categoryType)
-      //  console.log(this.currCategories)
+        if(this.mode === 'edit'){
+          this.currCategories = this.categories.filter(cat=>cat.categoryType === this.currCategory.categoryType)
+          console.log(this.currCategories[0].categoryName)
+
+        }else{
+          this.currCategories = this.categories.filter(cat=>cat.categoryType === 'EXPENSE')
+          this.selectedCategory = this.currCategories[0]
+          this.selected = this.currCategories[0].categoryName
+
+        }
 
       })
       .catch((err)=>console.log(err))
@@ -75,9 +84,9 @@ export default {
      }
   },
     mounted(){
-    this.fetchCategories()
-    console.log("curr category " + this.currCategory.categoryType)
-  }
+     this.fetchCategories()
+
+   }
 }
 </script>
 

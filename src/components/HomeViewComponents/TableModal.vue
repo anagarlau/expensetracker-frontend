@@ -1,14 +1,16 @@
 <template>
 
-  <modal-wrapper>
+  <modal-wrapper :mode="mode">
     <div class="modal-body text-center mb-1" id="modal-body-clickable-rows">
       <div class="md-form mt-0 mb-2">
         <Datepicker position="left" menuClassName="dp-custom-menu" format="dd-MM-yyyy" :enableTimePicker="false"
                     v-model="date"></Datepicker>
         <p> {{ date }}</p>
+        <p> </p>
+        <p></p>
       </div>
 
-      <category-btn-group :currCategory="startCategory" @select-category="updateCategory"></category-btn-group>
+      <category-btn-group :mode="mode" :currCategory="startCategory" @select-category="updateCategory"></category-btn-group>
 
 
       <div class="md-form mb-2">
@@ -51,7 +53,7 @@ export default {
     ModalWrapper,
     Datepicker
   },
-  props: ['clickedTransaction'],
+  props: ['clickedTransaction', 'mode'],
   emits: ['update-balance'],
   inject: ['deleteTransaction'],
   data () {
