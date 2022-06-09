@@ -2,18 +2,14 @@
 
   <nav-bar :balance="balance"></nav-bar>
   <div class="container justify-content-center">
-    <div class="row justify-content-center">
+    <div class="row justify-content-center ">
       <filter-row @open-post="openPostModal"></filter-row>
-<!--        <div class="col">-->
-<!--        <button type="button"  class="btn btn-primary btn-lg btn-floating round" @click="openPostModal">-->
-<!--          <i class="bi bi-plus-lg"></i>-->
-<!--        </button>-->
-<!--      </div>-->
     </div>
    <post-modal :mode="modalMode" v-if="postModal" @close-modal="closeModal"></post-modal>
   <div class="row justify-content-center">
     <div class="col">
     <table-wrapper>
+
       <table-header></table-header>
       <table-body>
         <table-row v-for="transaction in transactions" :key="transaction.id" :transaction="transaction"
@@ -160,6 +156,5 @@ export default {
 </script>
 
 <style scoped>
-
 
 </style>

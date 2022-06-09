@@ -1,7 +1,7 @@
 <template>
-  <transition name="modal">
-    <div>
-      <div id="modal-clickable-rows" aria-hidden="true" class="modal-backdrop" tabindex="-1">
+  <transition name="modal" >
+<!--    class="modal" -->
+      <div class="modal in modal-active" id="modal-clickable-rows" aria-hidden="true"  tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
           <div class="modal-content mb-0 mt-0">
             <div class="modal-header text-center mb-0">
@@ -12,7 +12,7 @@
           </div>
         </div>
       </div>
-    </div>
+
   </transition>
 </template>
 
@@ -36,7 +36,7 @@ export default {
     }
   },
   mounted () {
-    console.log(this.mode + " prop mode ")
+    //console.log(this.mode + " prop mode ")
   }
 }
 </script>
@@ -45,4 +45,10 @@ export default {
 .modal-header {
   border-bottom: 0 none;
 }
+
+.modal-active{
+  display:block;
+}
+
+
 </style>
