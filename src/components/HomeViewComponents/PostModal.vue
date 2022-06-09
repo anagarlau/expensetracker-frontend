@@ -53,8 +53,22 @@ export default {
     },
     submitForm(){
       console.log(this.currCategory.categoryName)
-      const newdate = this.date.toISOString().slice(0, 10)
-      console.log(newdate)
+      if(this.currCategory === null || this.amount === null || this.amount <=0 || this.description.length < 10 || this.date === null){
+        //set error message
+        return
+      }else{
+        console.log('Upon pressing post')
+        const toPost = {
+          cid: this.currCategory.cid,
+          transactionDescription: this.description,
+          transactionTotal: this.amount,
+          transactionDate: this.date.toISOString().slice(0, 10)
+        }
+        console.log(toPost.cid)
+        console.log(toPost.transactionDescription)
+        console.log(toPost.transactionTotal)
+        console.log(toPost.transactionDate)
+      }
     }
   },
   mounted(){

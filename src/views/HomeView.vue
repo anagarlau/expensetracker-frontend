@@ -1,6 +1,7 @@
 <template>
 
   <nav-bar :balance="balance"></nav-bar>
+
   <div class="container justify-content-center">
     <div class="row justify-content-center ">
       <filter-row @open-post="openPostModal"></filter-row>

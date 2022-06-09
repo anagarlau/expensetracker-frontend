@@ -19,13 +19,13 @@ export default {
   emits: ['select-category'],
   data(){
     return {
+      currCategories: [],
+      categories: [],
       selectedCategory : this.currCategory === null ? this.selectedCategory : this.currCategory,
       selected: this.currCategory === null ? this.selected : this.currCategory.categoryName,
       catMode: this.currCategory === null ? 'EXPENSE' : this.currCategory.categoryType,
       isExpenseSelected: this.currCategory === null ? true : this.currCategory.categoryType === 'EXPENSE' ,
-      isIncomeSelected: this.currCategory === null ? false : this.currCategory.categoryType === 'INCOME',
-      currCategories: [],
-      categories: []
+      isIncomeSelected: this.currCategory === null ? false : this.currCategory.categoryType === 'INCOME'
 
     }
   },
@@ -38,7 +38,7 @@ export default {
      this.$emit('select-category', this.selectedCategory)
     }
     },
-  methods:{
+   methods:{
       switchCategory(cat){
         this.catMode=cat
         this.catMode === 'EXPENSE' ? this.isExpenseSelected = true : this.isExpenseSelected = false
@@ -68,15 +68,13 @@ export default {
         this.categories = data
         if(this.mode === 'edit'){
           this.currCategories = this.categories.filter(cat=>cat.categoryType === this.currCategory.categoryType)
-          console.log(this.currCategories[0].categoryName)
+
 
         }else{
           this.currCategories = this.categories.filter(cat=>cat.categoryType === 'EXPENSE')
-          this.selectedCategory = this.currCategories[0]
           this.selected = this.currCategories[0].categoryName
 
         }
-
       })
       .catch((err)=>console.log(err))
 
@@ -85,8 +83,7 @@ export default {
   },
     mounted(){
      this.fetchCategories()
-
-   }
+    }
 }
 </script>
 
