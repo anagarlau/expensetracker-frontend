@@ -2,6 +2,7 @@
 
   <modal-wrapper :mode="mode">
     <div class="modal-body text-center mb-1" id="modal-body-clickable-rows">
+      <p v-if="error.length>0">{{error}} </p>
       <div class="md-form mt-0 mb-2">
         <Datepicker position="left" menuClassName="dp-custom-menu" format="dd-MM-yyyy" :enableTimePicker="false"
                     v-model="date"></Datepicker>
@@ -58,6 +59,7 @@ export default {
   inject: ['deleteTransaction'],
   data () {
     return {
+      error: '',
       startCategory: this.clickedTransaction.category,
       date: new Date(this.clickedTransaction.transactionDate).toISOString().slice(0, 10),
       description: this.clickedTransaction.transactionDescription,
@@ -75,7 +77,12 @@ export default {
       this.startCategory = newCategory
     },
     editTransaction (id) {
+      this.error = ''
       console.log('Upon pressing edit')
+      if(this.description.length < 10 || this.amount === 0){
+        this.error = 'Description must be at least 10 characters long. Transaction amount must be greater than 0.'
+        return
+      }
       const edited = {
         cid: this.startCategory.cid,
         transactionDescription: this.description,
@@ -94,16 +101,14 @@ export default {
       fetch(`https://expensetracker22.herokuapp.com/api/v1/transactions/${id}`, options)
         .then((res) => {
           if (res.ok) {
+            this.$emit('update-balance')
             return res.json()
           } else {
             throw new Error("Smth went wrong")
           }
         })
-        .then((data) => {
-          console.log(data)
-          this.$emit('update-balance', id ,edited)
-        })
         .catch((error) => {
+          this.error = 'Something went wrong on our side. Please try again'
           console.log(error)
         })
 

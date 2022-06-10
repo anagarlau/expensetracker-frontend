@@ -1,11 +1,12 @@
 <template>
-   <modal-wrapper :mode="mode">
-    <div class="modal-body text-center mb-1" >
-      <h1> Hello World</h1>
+  <modal-wrapper :mode="mode">
+    <div class="modal-body text-center mb-1">
+      <p v-if="error.length>0">{{error}} </p>
       <form @submit.prevent="submitForm">
-      <Datepicker position="left" menuClassName="dp-custom-menu" format="dd-MM-yyyy" :enableTimePicker="false"
-                  v-model="date"></Datepicker>
-      <category-btn-group :mode="mode" :curr-category="currCategory" @select-category="updateCategory"> </category-btn-group>
+        <Datepicker position="left" menuClassName="dp-custom-menu" format="dd-MM-yyyy" :enableTimePicker="false"
+                    v-model="date"></Datepicker>
+        <category-btn-group :mode="mode" :curr-category="currCategory"
+                            @select-category="updateCategory"></category-btn-group>
 
         <div class="md-form mb-2">
           <input type="text" id="form3" class="form-control validate" v-model="description">
@@ -20,10 +21,10 @@
           </div>
         </div>
         <div class="modal-footer mt-0">
-          <button class="btn btn-outline-danger" > Submit </button>
+          <button class="btn btn-outline-danger"> Submit</button>
         </div>
 
-     </form>
+      </form>
     </div>
   </modal-wrapper>
 </template>
@@ -37,41 +38,66 @@ import '@vuepic/vue-datepicker/dist/main.css'
 export default {
   name: 'PostModal',
   props: ['mode'],
-  components: { CategoryBtnGroup, ModalWrapper, Datepicker },
-  data(){
+  emits: ['update-list'],
+  components: {
+    CategoryBtnGroup,
+    ModalWrapper,
+    Datepicker
+  },
+  data () {
     return {
+      error: '',
       currCategory: null,
       date: new Date(),
       description: '',
       amount: null
     }
   },
-  methods:{
-    updateCategory(newCategory){
+  methods: {
+    updateCategory (newCategory) {
       this.currCategory = newCategory
-      console.log("Updating in Post Modal " + this.currCategory.categoryName)
+      console.log('Updating in Post Modal ' + this.currCategory.categoryName)
     },
-    submitForm(){
+    submitForm () {
+      this.error = ''
       console.log(this.currCategory.categoryName)
-      if(this.currCategory === null || this.amount === null || this.amount <=0 || this.description.length < 10 || this.date === null){
-        //set error message
+      if (this.currCategory === null || this.amount === null || this.amount <= 0 || this.description.length < 10 || this.date === null) {
+        this.error = 'Description must be at least 10 characters long. Transaction amount must be greater than 0.'
         return
-      }else{
+      } else {
         console.log('Upon pressing post')
+        const reqType = this.currCategory.categoryType === 'EXPENSE' ? 'expenses' : 'incomes'
         const toPost = {
           cid: this.currCategory.cid,
           transactionDescription: this.description,
           transactionTotal: this.amount,
           transactionDate: this.date.toISOString().slice(0, 10)
         }
-        console.log(toPost.cid)
-        console.log(toPost.transactionDescription)
-        console.log(toPost.transactionTotal)
-        console.log(toPost.transactionDate)
+         const options = {
+          method: 'POST',
+          mode: 'cors',
+          headers: {
+            Authorization: this.$store.getters.token,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(toPost)
+        }
+        fetch(`https://expensetracker22.herokuapp.com/api/v1/${reqType}`, options)
+          .then((res) => {
+            if (res.ok) {
+              this.$emit('update-list')
+            } else {
+              throw new Error("Smth went wrong")
+            }
+          })
+           .catch((error) => {
+            this.error = 'Something went wrong on our side. Please try again'
+            console.log(error)
+          })
       }
     }
   },
-  mounted(){
+  mounted () {
     console.log(this.mode)
   }
 }
