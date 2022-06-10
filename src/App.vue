@@ -7,7 +7,6 @@
 <script>
 
 export default {
-
   components: {
 
   },
@@ -15,8 +14,10 @@ export default {
     isLoggedIn(){
       return this.$store.getters.token != null && this.$store.getters.email != null
     }
-  }
+  },
+  mounted () {
 
+  }
 
 }
 </script>

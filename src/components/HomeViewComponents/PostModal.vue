@@ -2,7 +2,7 @@
   <modal-wrapper :mode="mode">
     <div class="modal-body text-center mb-1">
       <p v-if="error.length>0">{{error}} </p>
-      <form @submit.prevent="submitForm">
+      <div>
         <Datepicker position="left" menuClassName="dp-custom-menu" format="dd-MM-yyyy" :enableTimePicker="false"
                     v-model="date"></Datepicker>
         <category-btn-group :mode="mode" :curr-category="currCategory"
@@ -20,11 +20,11 @@
             <input type="number" inputmode="numeric" v-model="amount" id="inputPassword6" class="form-control">
           </div>
         </div>
-        <div class="modal-footer mt-0">
-          <button class="btn btn-outline-danger"> Submit</button>
-        </div>
 
-      </form>
+     </div>
+      <div class="modal-footer mt-0">
+        <button  class="btn btn-outline-danger" @click="submitForm"> Submit</button>
+      </div>
     </div>
   </modal-wrapper>
 </template>
@@ -73,7 +73,7 @@ export default {
           transactionTotal: this.amount,
           transactionDate: this.date.toISOString().slice(0, 10)
         }
-         const options = {
+          const options = {
           method: 'POST',
           mode: 'cors',
           headers: {
@@ -85,11 +85,12 @@ export default {
         fetch(`https://expensetracker22.herokuapp.com/api/v1/${reqType}`, options)
           .then((res) => {
             if (res.ok) {
-              this.$emit('update-list')
+                return res.json()
             } else {
               throw new Error("Smth went wrong")
             }
           })
+            .then((data)=> this.$emit('update-list', data))
            .catch((error) => {
             this.error = 'Something went wrong on our side. Please try again'
             console.log(error)

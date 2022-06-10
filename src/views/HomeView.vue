@@ -1,8 +1,9 @@
 <template>
 
-  <nav-bar :balance="balance"></nav-bar>
+  <nav-bar ></nav-bar>
 
   <div class="container justify-content-center">
+    <h4> <i class="bi bi-currency-euro"></i> {{balance}}</h4>
     <div class="row justify-content-center ">
       <filter-row @open-post="openPostModal"></filter-row>
     </div>
@@ -76,7 +77,7 @@ export default {
       deleteTransaction: this.deleteTransaction,
      }
   },
-  mounted () {
+  created () {
     this.getTransactions()
   },
   methods: {
@@ -118,16 +119,27 @@ export default {
       if(this.modalMode === 'post'){
         this.postModal = false
       }
-      this.modalMode = ''
     },
     openPostModal(mode){
       console.log("Opening Post Modal")
       this.postModal = true
       this.modalMode = mode
      },
-    updateUponEdit () {
-      this.getTransactions()
+    updateUponEdit (toAdd) {
+      console.log("EDIT MODE " +  this.modalMode)
+      if(this.modalMode === 'edit'){
+        console.log("Logik zum edieren")
+       const index= this.transactions.findIndex(o=>o.id === toAdd.id)
+        console.log(index)
+        this.transactions.splice(index, 1, toAdd);
+      }
+      if(this.modalMode === 'post'){
+        console.log("Logik zum hinzufuegen")
+        this.transactions.unshift(toAdd)
+      }
+      //this.getTransactions()
       this.closeModal()
+      this.modalMode = ''
     },
     deleteTransaction (id) {
       console.log('Attempting to delete ' + id)

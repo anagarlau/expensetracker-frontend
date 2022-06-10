@@ -89,7 +89,7 @@ export default {
         transactionTotal: this.amount,
         transactionDate: this.date
       }
-      const options = {
+       const options = {
         method: 'PATCH',
         mode: 'cors',
         headers: {
@@ -101,12 +101,12 @@ export default {
       fetch(`https://expensetracker22.herokuapp.com/api/v1/transactions/${id}`, options)
         .then((res) => {
           if (res.ok) {
-            this.$emit('update-balance')
             return res.json()
           } else {
             throw new Error("Smth went wrong")
           }
         })
+        .then((data)=> this.$emit('update-balance', data))
         .catch((error) => {
           this.error = 'Something went wrong on our side. Please try again'
           console.log(error)
