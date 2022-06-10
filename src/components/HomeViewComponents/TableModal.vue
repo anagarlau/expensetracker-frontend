@@ -28,7 +28,7 @@
       </div>
     </div>
 
-    <div class="modal-footer mt-0">
+    <div class="modal-footer justify-content-center mt-0">
       <button type="button" class="btn btn-outline-primary" @click="editTransaction(clickedTransaction.id)">
         Edit
         <i class="fa fa-paper-plane ms-2"></i>
