@@ -2,6 +2,8 @@
 
   <nav-bar></nav-bar>
 
+
+
   <div class="container justify-content-center">
     <div class="row">
       <div class="col">
@@ -20,7 +22,7 @@ import NavBar from '@/components/NavBar'
 import TableCategories from '@/components/CategoriesViewComponents/TableCategories'
 import CategoryModal from '@/components/CategoriesViewComponents/CategoryModal'
 export default {
-  components: { CategoryModal, TableCategories, NavBar },
+  components: { CategoryModal, TableCategories, NavBar},
   data(){
     return{
       modal: false

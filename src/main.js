@@ -7,6 +7,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.min'
 
+
 const store = createStore({
   // like data in a component - manages global state
   state () {
@@ -96,6 +97,7 @@ const store = createStore({
 
 })
 const app = createApp(App)
+
 app.use(router)
 app.use(store)
 app.mount('#app')
