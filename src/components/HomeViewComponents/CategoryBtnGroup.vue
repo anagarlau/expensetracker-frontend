@@ -19,8 +19,8 @@ export default {
   emits: ['select-category'],
   data(){
     return {
-      currCategories: [],
       categories: [],
+      currCategories: [],
       selectedCategory : this.currCategory === null ? this.selectedCategory : this.currCategory,
       selected: this.currCategory === null ? this.selected : this.currCategory.categoryName,
       catMode: this.currCategory === null ? 'EXPENSE' : this.currCategory.categoryType,
@@ -38,13 +38,13 @@ export default {
      this.$emit('select-category', this.selectedCategory)
     }
     },
-   methods:{
-      switchCategory(cat){
-        this.catMode=cat
-        this.catMode === 'EXPENSE' ? this.isExpenseSelected = true : this.isExpenseSelected = false
-        this.catMode === 'INCOME' ? this.isIncomeSelected = true : this.isIncomeSelected = false
-        this.currCategories = this.categories.filter(cat=>cat.categoryType === this.catMode)
-        console.log(this.currCategories)
+   methods: {
+     switchCategory (cat) {
+       this.catMode = cat
+       this.catMode === 'EXPENSE' ? this.isExpenseSelected = true : this.isExpenseSelected = false
+       this.catMode === 'INCOME' ? this.isIncomeSelected = true : this.isIncomeSelected = false
+       this.currCategories = this.categories.filter(cat => cat.categoryType === this.catMode)
+       console.log(this.currCategories)
      },
     fetchCategories(){
       const header = {
@@ -82,7 +82,7 @@ export default {
      }
   },
     mounted(){
-     this.fetchCategories()
+      this.fetchCategories()
     }
 }
 </script>

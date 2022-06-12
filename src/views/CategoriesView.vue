@@ -7,6 +7,7 @@
   <div class="container justify-content-center">
     <div class="row">
       <div class="col">
+        <p v-if="catLength===0"> You currently have 0 categories. Press the button to create some</p>
         <button type="button"  class="btn btn-primary btn-lg btn-floating round" @click="openModal" >
           <i class="bi bi-plus-lg"></i>
         </button>
@@ -14,7 +15,7 @@
       </div>
       <category-modal v-if="modal" @close-modal="closeModal"> </category-modal>
     </div>
-   <table-categories> </table-categories>
+   <table-categories v-if="catLength>0" :categories="categories"> </table-categories>
   </div>
 </template>
 <script>
@@ -26,19 +27,20 @@ export default {
   data(){
     return{
       modal: false
-    }
+     }
   },
   provide(){
     return {
       closeModel: this.closeModal
     }
   },
-  methods:{
-    openModal(){
+  props: ['categories', 'catLength'],
+  methods: {
+    openModal () {
       this.modal = true
       console.log("Modal Categ " + this.modal)
     },
-    closeModal(){
+    closeModal () {
       this.modal = false
     }
   }

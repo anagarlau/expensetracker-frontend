@@ -5,11 +5,11 @@
       <div>
         <Datepicker position="left" menuClassName="dp-custom-menu" format="dd-MM-yyyy" :enableTimePicker="false"
                     v-model="date"></Datepicker>
-        <category-btn-group :mode="mode" :curr-category="currCategory"
+        <category-btn-group  :mode="mode" :curr-category="currCategory"
                             @select-category="updateCategory"></category-btn-group>
 
         <div class="md-form mb-2">
-          <input type="text" id="form3" class="form-control validate" v-model="description">
+          <input type="text" id="form3" class="form-control validate" v-model="description" placeholder="Describe your transaction">
         </div>
         <!--      <input   id="form2" class="form-control validate" v-model="amount" >-->
         <div class="md-form row g-3 align-items-center mb-2">
@@ -17,7 +17,7 @@
             <label for="inputPassword6" class="col-form-label">Amount <i class="bi bi-currency-euro"></i></label>
           </div>
           <div class="col-auto">
-            <input type="number" inputmode="numeric" v-model="amount" id="inputPassword6" class="form-control">
+            <input type="number" inputmode="numeric" v-model="amount" id="inputPassword6" class="form-control" placeholder="0">
           </div>
         </div>
 
@@ -37,7 +37,7 @@ import '@vuepic/vue-datepicker/dist/main.css'
 
 export default {
   name: 'PostModal',
-  props: ['mode'],
+  props: ['mode', 'categories'],
   emits: ['update-list'],
   components: {
     CategoryBtnGroup,

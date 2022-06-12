@@ -1,27 +1,33 @@
 <template>
 
-  <nav-bar ></nav-bar>
+  <nav-bar></nav-bar>
 
   <div class="container justify-content-center">
-    <h4> <i class="bi bi-currency-euro"></i> {{balance}}</h4>
-    <div class="row justify-content-center ">
-      <filter-row @open-post="openPostModal"></filter-row>
+    <h4><i class="bi bi-currency-euro"></i> {{ balance }}</h4>
+    <div class="row justify-content-center" v-if="catLength > 0">
+      <filter-row v-if="catLength>0" @open-post="openPostModal"></filter-row>
+
+      <post-modal :mode="modalMode" v-if="postModal" @close-modal="closeModal"
+                  @update-list="updateUponEdit"></post-modal>
     </div>
-   <post-modal :mode="modalMode" v-if="postModal" @close-modal="closeModal" @update-list="updateUponEdit"></post-modal>
-  <div class="row justify-content-center">
-    <div class="col">
-    <table-wrapper>
-      <table-header></table-header>
-      <table-body>
-        <table-row v-for="transaction in transactions" :key="transaction.id" :transaction="transaction"
-                   @click="openModal(transaction.id)"></table-row>
-        <table-modal :mode="modalMode" v-if="modal" :clickedTransaction="rowClicked" @close-modal="closeModal"
-                     @update-balance="updateUponEdit"></table-modal>
-      </table-body>
-    </table-wrapper>
+    <div class="row justify-content-center" v-if="transactions.length > 0">
+      <div class="col">
+        <table-wrapper>
+          <table-header></table-header>
+          <table-body>
+            <table-row v-for="transaction in transactions" :key="transaction.id" :transaction="transaction"
+                       @click="openModal(transaction.id)"></table-row>
+            <table-modal :mode="modalMode" v-if="modal" :clickedTransaction="rowClicked" @close-modal="closeModal"
+                         @update-balance="updateUponEdit"></table-modal>
+          </table-body>
+        </table-wrapper>
+      </div>
     </div>
+    <div v-if="catLength> 0 && transactions.length ===0"><p> Please post a transaction </p></div>
+    <div v-if="catLength === 0 && transactions.length ===0"><p> You currently have 0 categories. Please create some
+      first </p></div>
   </div>
-  </div>
+
 
 </template>
 
@@ -56,8 +62,9 @@ export default {
       rowClicked: null,
       postModal: false,
       modalMode: ''
-      }
+    }
   },
+  props: ['catLength', 'categories'],
   computed: {
     header () {
       return this.$store.getters.token
@@ -75,7 +82,7 @@ export default {
   provide () {
     return {
       deleteTransaction: this.deleteTransaction,
-     }
+    }
   },
   created () {
     this.getTransactions()
@@ -112,29 +119,29 @@ export default {
     },
     closeModal () {
       console.log('Trying to close modal')
-       if(this.modalMode === 'edit'){
+      if (this.modalMode === 'edit') {
         this.rowClicked = null
         this.modal = false
       }
-      if(this.modalMode === 'post'){
+      if (this.modalMode === 'post') {
         this.postModal = false
       }
     },
-    openPostModal(mode){
-      console.log("Opening Post Modal")
+    openPostModal (mode) {
+      console.log('Opening Post Modal')
       this.postModal = true
       this.modalMode = mode
-     },
+    },
     updateUponEdit (toAdd) {
-      console.log("EDIT MODE " +  this.modalMode)
-      if(this.modalMode === 'edit'){
-        console.log("Logik zum edieren")
-       const index= this.transactions.findIndex(o=>o.id === toAdd.id)
+      console.log('EDIT MODE ' + this.modalMode)
+      if (this.modalMode === 'edit') {
+        console.log('Logik zum edieren')
+        const index = this.transactions.findIndex(o => o.id === toAdd.id)
         console.log(index)
-        this.transactions.splice(index, 1, toAdd);
+        this.transactions.splice(index, 1, toAdd)
       }
-      if(this.modalMode === 'post'){
-        console.log("Logik zum hinzufuegen")
+      if (this.modalMode === 'post') {
+        console.log('Logik zum hinzufuegen')
         this.transactions.unshift(toAdd)
       }
       //this.getTransactions()

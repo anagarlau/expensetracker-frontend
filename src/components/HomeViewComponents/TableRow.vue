@@ -3,7 +3,7 @@
     <td >{{ transaction.id }}</td>
     <td>{{transaction.transactionDescription}}</td>
     <td> {{transaction.transactionDate}}</td>
-    <td> {{transaction.category.categoryName}}</td>
+    <td> <i :class="transaction.category.icon"></i> {{transaction.category.categoryName}}</td>
     <td> {{transaction.transactionTotal}}</td>
   </table-row-wrapper>
 
