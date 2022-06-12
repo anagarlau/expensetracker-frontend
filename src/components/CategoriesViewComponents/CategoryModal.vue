@@ -25,8 +25,8 @@
                   <i :class="selectedIcon"></i>
                 </button>
                 <ul class="dropdown-menu">
-                  <li class="dropdown" v-for="item in filteredItems" :key="item" @click="selectIcon(item)"><i
-                    :class="item"></i></li>
+                  <li class="dropdown" v-for="item in filteredItems" :key="item" @click="selectIcon(item)">
+                    <i :class="item"></i></li>
                 </ul>
               </div>
             </div>
@@ -120,7 +120,9 @@ export default {
   cursor: pointer;
   border-radius: 5px;
   transition: 0.2s;
+  transform: scale(2.5);
 }
+
 
 
 </style>

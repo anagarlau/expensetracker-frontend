@@ -8,7 +8,7 @@
       <filter-row v-if="catLength>0" @open-post="openPostModal"></filter-row>
 
       <post-modal :mode="modalMode" v-if="postModal" @close-modal="closeModal"
-                  @update-list="updateUponEdit"></post-modal>
+                  @update-list="updateList"></post-modal>
     </div>
     <div class="row justify-content-center" v-if="transactions.length > 0">
       <div class="col">
@@ -18,14 +18,14 @@
             <table-row v-for="transaction in transactions" :key="transaction.id" :transaction="transaction"
                        @click="openModal(transaction.id)"></table-row>
             <table-modal :mode="modalMode" v-if="modal" :clickedTransaction="rowClicked" @close-modal="closeModal"
-                         @update-balance="updateUponEdit"></table-modal>
+                         @update-balance="updateList" @delete-transaction="deleteTransaction"></table-modal>
           </table-body>
         </table-wrapper>
       </div>
     </div>
-    <div v-if="catLength> 0 && transactions.length ===0"><p> Please post a transaction </p></div>
-    <div v-if="catLength === 0 && transactions.length ===0"><p> You currently have 0 categories. Please create some
-      first </p></div>
+<!--    <div v-if="catLength> 0 && transactions.length ===0"><p> Please post a transaction </p></div>-->
+<!--    <div v-if="catLength === 0 && transactions.length ===0"><p> You currently have 0 categories. Please create some-->
+<!--      first </p></div>-->
   </div>
 
 
@@ -57,14 +57,13 @@ export default {
   },
   data () {
     return {
-      transactions: [],
       modal: false,
       rowClicked: null,
       postModal: false,
       modalMode: ''
     }
   },
-  props: ['catLength', 'categories'],
+  props: ['catLength', 'categories', 'transactions'],
   computed: {
     header () {
       return this.$store.getters.token
@@ -79,38 +78,7 @@ export default {
       return (this.incomes - this.expenses)
     }
   },
-  provide () {
-    return {
-      deleteTransaction: this.deleteTransaction,
-    }
-  },
-  created () {
-    this.getTransactions()
-  },
   methods: {
-    getTransactions () {
-      console.log('Token ' + this.$store.getters.token)
-      console.log('Email ' + this.$store.getters.email)
-      fetch(`https://expensetracker22.herokuapp.com/api/v1/transactions`,
-        {
-          method: 'GET',
-          mode: 'cors',
-          headers: {
-            'Authorization': this.$store.getters.token,
-            'Content-Type': 'application/json',
-          },
-
-        }).then((response) => {
-        if (response.ok) {
-          return response.json()
-        } else {
-          throw new Error(response.status + ' status code')
-        }
-      }).then((data) => {
-        this.transactions = data
-      })
-        .catch((err) => console.log(err))
-    },
     openModal (id) {
       console.log('Opening Modal for ' + id)
       this.rowClicked = this.transactions.find((tr) => tr.id === id)
@@ -132,7 +100,7 @@ export default {
       this.postModal = true
       this.modalMode = mode
     },
-    updateUponEdit (toAdd) {
+    updateList (toAdd) {
       console.log('EDIT MODE ' + this.modalMode)
       if (this.modalMode === 'edit') {
         console.log('Logik zum edieren')
@@ -144,28 +112,15 @@ export default {
         console.log('Logik zum hinzufuegen')
         this.transactions.unshift(toAdd)
       }
-      //this.getTransactions()
       this.closeModal()
       this.modalMode = ''
     },
     deleteTransaction (id) {
-      console.log('Attempting to delete ' + id)
-      const options = {
-        method: 'DELETE',
-        mode: 'cors',
-        headers: {
-          'Authorization': this.$store.getters.token,
-        }
-      }
-      fetch(`https://expensetracker22.herokuapp.com/api/v1/transactions/${id}`, options)
-        .then((res) => {
-          if (res.ok) {
-            this.transactions = this.transactions.filter((t) => t.id !== id)
-          } else {
-            throw new Error(res.status + ' response status')
-          }
-        })
-        .catch((e) => console.log(e))
+      const index = this.transactions.findIndex(o => o.id === id)
+      console.log(index)
+      this.transactions.splice(index, 1)
+      this.closeModal()
+      this.modalMode = ''
     }
 
   }

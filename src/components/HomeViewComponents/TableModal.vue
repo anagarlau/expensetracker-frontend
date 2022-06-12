@@ -55,8 +55,7 @@ export default {
     Datepicker
   },
   props: ['clickedTransaction', 'mode'],
-  emits: ['update-balance'],
-  inject: ['deleteTransaction'],
+  emits: ['update-balance', 'delete-transaction'],
   data () {
     return {
       error: '',
@@ -112,6 +111,30 @@ export default {
           console.log(error)
         })
 
+    },
+    deleteTransaction (id) {
+      this.error = ''
+      console.log('Attempting to delete ' + id)
+      const options = {
+        method: 'DELETE',
+        mode: 'cors',
+        headers: {
+          Authorization: this.$store.getters.token
+        }
+      }
+      fetch(`https://expensetracker22.herokuapp.com/api/v1/transactions/${id}`, options)
+        .then((res) => {
+          if (res.ok) {
+            return res.json
+          } else {
+            throw new Error(res.status + ' response status')
+          }
+        })
+        .then((data)=>this.$emit('delete-transaction', id))
+        .catch((e) => {
+          this.error='Something went wrong on our side'
+          console.log(e)
+        })
     }
   }
 }

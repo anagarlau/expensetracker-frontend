@@ -1,11 +1,11 @@
 <template>
 <div>
-  <router-view :categories="categories" :catLength="categories.length" />
+  <router-view :categories="categories" :catLength="categories.length" :transactions="transactions"  />
   </div>
 </template>
 
 <script>
-
+/* eslint-disable */
 export default {
   components: {
 
@@ -17,11 +17,14 @@ export default {
   },
   data(){
     return {
-      categories: []
+      categories: [],
+      transactions:[]
     }
   },
-  mounted () {
-    this.fetchCategories()
+
+  created () {
+    this.fetchCategories(),
+    this.getTransactions()
   },
   methods:{
     fetchCategories(){
@@ -51,6 +54,29 @@ export default {
           this.error = 'Something went wrong on our side'
         })
 
+    },
+    getTransactions () {
+      console.log('Token ' + this.$store.getters.token)
+      console.log('Email ' + this.$store.getters.email)
+      fetch(`https://expensetracker22.herokuapp.com/api/v1/transactions`,
+        {
+          method: 'GET',
+          mode: 'cors',
+          headers: {
+            'Authorization': this.$store.getters.token,
+            'Content-Type': 'application/json',
+          },
+
+        }).then((response) => {
+        if (response.ok) {
+          return response.json()
+        } else {
+          throw new Error(response.status + ' status code')
+        }
+      }).then((data) => {
+        this.transactions = data
+      })
+        .catch((err) => console.log(err))
     }
   }
 
