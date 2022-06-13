@@ -12,6 +12,7 @@
                     @click="closeModal"></button>
           </div>
           <div class="modal-body mt-0 mb-2" id="modal-body-clickable-rows">
+            <p v-if="error.length >0 "> {{error}} </p>
             <div class="btn-group md-form mb-3 cat-btns" role="group">
               <button  class="btn btn-lg btn-outline-primary" :class="[isExpenseSelected ? 'active' : '']" @click="switchCategory('EXPENSE')">Expense</button>
               <button class="btn  btn-lg btn-outline-primary" :class="[isIncomeSelected ? 'active' : '']" @click="switchCategory('INCOME')">Income</button>
@@ -34,7 +35,7 @@
 
           </div>
           <div class="modal-footer justify-content-center">
-            <button type="button" class="btn btn-outline-primary">
+            <button type="button" class="btn btn-outline-primary" @click="postCategory">
               Post
               <i class="fa fa-arrow-right ms-2"></i>
             </button>
@@ -52,7 +53,7 @@
 export default {
   components: {},
   name: 'CategoryModal',
-  emits: ['close-modal'],
+  emits: ['close-modal', 'update-categories'],
   methods: {
     closeModal () {
       this.$emit('close-modal')
@@ -60,22 +61,70 @@ export default {
     selectIcon (icon) {
       this.selectedIcon = icon
       console.log(this.selectedIcon)
+    },
+    switchCategory(category){
+      category === 'EXPENSE' ? this.isExpenseSelected = true : this.isExpenseSelected = false
+      category === 'INCOME' ? this.isIncomeSelected = true : this.isIncomeSelected = false
+      this.categoryType=category
+     },
+    postCategory(){
+      if(this.name.length === 0 || this.selectedIcon.length === 0 || this.categoryType.length === 0){
+        this.error = 'Please fill in all the fields'
+      }
+      const newCat = {
+        categoryName: this.name,
+        icon: this.selectedIcon,
+        categoryType: this.categoryType
+       }
+      console.log(newCat.categoryType)
+      console.log(newCat.categoryName)
+      console.log(newCat.icon)
+      const options = {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          Authorization: this.$store.getters.token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newCat)
+      }
+      fetch(`https://expensetracker22.herokuapp.com/api/v1/categories`, options)
+        .then((res) => {
+          if (res.ok) {
+            return res.json()
+          } else {
+            throw new Error("Smth went wrong")
+          }
+        })
+        .then((data)=> {
+          console.log(data)
+          this.$emit('update-categories', data)
+        })
+        .catch((error) => {
+          this.error = 'A category with this name exists already'
+          console.log(error)
+        })
     }
   },
   data () {
     return {
       filteredItems: [],
       selectedIcon: '',
-      name: ''
+      name: '',
+      categoryType: 'EXPENSE',
+      isIncomeSelected: false,
+      isExpenseSelected: true,
+      error: ''
     }
   },
+
   created () {
     this.filteredItems = ["bi bi-cash-coin","bi bi-balloon-heart-fill","bi bi-alarm",'bi bi-piggy-bank-fill', 'bi bi-bag', 'bi bi-bandaid-fill', 'bi bi-bank2', 'bi bi-basket-fill',"bi bi-cart-x-fill" ,'bi bi-bell-fill', 'bi bi-bicycle', 'bi bi-binoculars-fill', 'bi bi-book-fill',
       'bi bi-boombox-fill', 'bi bi-box2-fill', 'bi bi-briefcase-fill', 'bi bi-brush-fill', 'bi bi-camera-reels-fill', 'bi bi-cart-fill', 'bi bi-credit-card-fill', 'bi bi-cup-fill',
       'bi bi-currency-exchange', 'bi bi-envelope-heart-fill', 'bi bi-gem', 'bi bi-gift-fill', 'bi bi-handbag-fill', 'bi bi-headphones', 'bi bi-house-door-fill', 'bi bi-mortarboard-fill',
       'bi bi-telephone-fill', 'bi bi-wallet-fill', 'bi bi-tags-fill', 'bi bi-building', 'bi bi-calendar-day',"bi bi-boxes"]
     this.selectedIcon = this.filteredItems[0]
-  }
+    }
 }
 </script>
 

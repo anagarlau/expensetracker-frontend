@@ -10,7 +10,7 @@
           </button>
 
         </div>
-        <category-modal v-if="modal" @close-modal="closeModal"></category-modal>
+        <category-modal v-if="modal" @close-modal="closeModal" @update-categories="updateCategories"></category-modal>
       </div>
       <table-categories v-if="catLength>0" :categories="categories"></table-categories>
     </div>
@@ -46,6 +46,11 @@ export default {
     },
     closeModal () {
       this.modal = false
+    },
+    updateCategories(data){
+     this.$emit('update-categories', data)
+     this.closeModal()
+
     }
   }
 }

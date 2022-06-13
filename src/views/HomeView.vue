@@ -1,5 +1,5 @@
 <template>
-
+<div>
   <nav-bar></nav-bar>
 
   <div class="container justify-content-center">
@@ -7,7 +7,7 @@
     <div class="row justify-content-center" v-if="catLength > 0">
       <filter-row v-if="catLength>0" @open-post="openPostModal"></filter-row>
 
-      <post-modal :mode="modalMode" v-if="postModal" @close-modal="closeModal"
+      <post-modal :categories="categories" :mode="modalMode" v-if="postModal" @close-modal="closeModal"
                   @update-list="updateList"></post-modal>
     </div>
     <div class="row justify-content-center" v-if="transactions.length > 0">
@@ -17,7 +17,7 @@
           <table-body>
             <table-row v-for="transaction in transactions" :key="transaction.id" :transaction="transaction"
                        @click="openModal(transaction.id)"></table-row>
-            <table-modal :mode="modalMode" v-if="modal" :clickedTransaction="rowClicked" @close-modal="closeModal"
+            <table-modal :categories="categories" :mode="modalMode" v-if="modal" :clickedTransaction="rowClicked" @close-modal="closeModal"
                          @update-balance="updateList" @delete-transaction="deleteTransaction"></table-modal>
           </table-body>
         </table-wrapper>
@@ -28,7 +28,7 @@
 <!--      first </p></div>-->
   </div>
 
-
+</div>
 </template>
 
 <script>

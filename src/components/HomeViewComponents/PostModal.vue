@@ -1,15 +1,16 @@
 <template>
   <modal-wrapper :mode="mode">
     <div class="modal-body text-center mb-1">
-      <p v-if="error.length>0">{{error}} </p>
+      <p v-if="error.length>0">{{ error }} </p>
       <div>
         <Datepicker position="left" menuClassName="dp-custom-menu" format="dd-MM-yyyy" :enableTimePicker="false"
                     v-model="date"></Datepicker>
-        <category-btn-group  :mode="mode" :curr-category="currCategory"
+        <category-btn-group :categories="categories" :mode="mode" :curr-category="currCategory"
                             @select-category="updateCategory"></category-btn-group>
 
         <div class="md-form mb-2">
-          <input type="text" id="form3" class="form-control validate" v-model="description" placeholder="Describe your transaction">
+          <input type="text" id="form3" class="form-control validate" v-model="description"
+                 placeholder="Describe your transaction">
         </div>
         <!--      <input   id="form2" class="form-control validate" v-model="amount" >-->
         <div class="md-form row g-3 align-items-center mb-2">
@@ -17,13 +18,14 @@
             <label for="inputPassword6" class="col-form-label">Amount <i class="bi bi-currency-euro"></i></label>
           </div>
           <div class="col-auto">
-            <input type="number" inputmode="numeric" v-model="amount" id="inputPassword6" class="form-control" placeholder="0">
+            <input type="number" inputmode="numeric" v-model="amount" id="inputPassword6" class="form-control"
+                   placeholder="0">
           </div>
         </div>
 
-     </div>
+      </div>
       <div class="modal-footer justify-content-center mt-0">
-        <button  class="btn btn-outline-danger" @click="submitForm"> Submit</button>
+        <button class="btn btn-outline-danger" @click="submitForm"> Submit</button>
       </div>
     </div>
   </modal-wrapper>
@@ -56,7 +58,7 @@ export default {
   methods: {
     updateCategory (newCategory) {
       this.currCategory = newCategory
-      console.log('Updating in Post Modal ' + this.currCategory.categoryName)
+      // console.log('Updating in Post Modal ' + this.currCategory.categoryName)
     },
     submitForm () {
       this.error = ''
@@ -73,7 +75,7 @@ export default {
           transactionTotal: this.amount,
           transactionDate: this.date.toISOString().slice(0, 10)
         }
-          const options = {
+        const options = {
           method: 'POST',
           mode: 'cors',
           headers: {
@@ -85,13 +87,13 @@ export default {
         fetch(`https://expensetracker22.herokuapp.com/api/v1/${reqType}`, options)
           .then((res) => {
             if (res.ok) {
-                return res.json()
+              return res.json()
             } else {
-              throw new Error("Smth went wrong")
+              throw new Error('Smth went wrong')
             }
           })
-            .then((data)=> this.$emit('update-list', data))
-           .catch((error) => {
+          .then((data) => this.$emit('update-list', data))
+          .catch((error) => {
             this.error = 'Something went wrong on our side. Please try again'
             console.log(error)
           })

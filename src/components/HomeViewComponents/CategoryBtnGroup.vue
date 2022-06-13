@@ -15,11 +15,10 @@
 <script>
 export default {
   name: 'CategoryBtnGroup',
-  props: ['currCategory', 'mode'],
+  props: ['currCategory', 'mode', 'categories'],
   emits: ['select-category'],
   data(){
     return {
-      categories: [],
       currCategories: [],
       selectedCategory : this.currCategory === null ? this.selectedCategory : this.currCategory,
       selected: this.currCategory === null ? this.selected : this.currCategory.categoryName,
@@ -31,11 +30,14 @@ export default {
   },
     watch: {
     selected(newVal){
-     console.log("watcher for selected " + newVal)
-     this.selected = newVal
-     this.selectedCategory = this.categories.find((cat) => cat.categoryName === newVal)
-      console.log(this.selectedCategory)
-     this.$emit('select-category', this.selectedCategory)
+      if(newVal.length>0){
+        console.log("watcher for selected " + newVal)
+        this.selected = newVal
+        this.selectedCategory = this.categories.find((cat) => cat.categoryName === newVal)
+        console.log(this.selectedCategory)
+        console.log(this.currCategory)
+        this.$emit('select-category', this.selectedCategory)
+      }
     }
     },
    methods: {
@@ -45,44 +47,50 @@ export default {
        this.catMode === 'INCOME' ? this.isIncomeSelected = true : this.isIncomeSelected = false
        this.currCategories = this.categories.filter(cat => cat.categoryType === this.catMode)
        console.log(this.currCategories)
-     },
-    fetchCategories(){
-      const header = {
-        method: 'GET',
-        mode: 'cors',
-        headers: {
-          Authorization: this.$store.getters.token,
-          'Content-Type': 'application/json'
-        }
-      }
-      fetch(`https://expensetracker22.herokuapp.com/api/v1/categories/all`, header)
-      .then((response)=>{
-        if(response.ok){
-          return response.json()
-        }else{
-          throw new Error(response.status + " went wrong")
-        }
-      })
-      .then((data)=>{
-        console.log(data)
-        this.categories = data
-        if(this.mode === 'edit'){
-          this.currCategories = this.categories.filter(cat=>cat.categoryType === this.currCategory.categoryType)
-
-
-        }else{
-          this.currCategories = this.categories.filter(cat=>cat.categoryType === 'EXPENSE')
-          this.selected = this.currCategories[0].categoryName
-
-        }
-      })
-      .catch((err)=>console.log(err))
-
-
      }
+    // fetchCategories(){
+    //   const header = {
+    //     method: 'GET',
+    //     mode: 'cors',
+    //     headers: {
+    //       Authorization: this.$store.getters.token,
+    //       'Content-Type': 'application/json'
+    //     }
+    //   }
+    //   fetch(`https://expensetracker22.herokuapp.com/api/v1/categories/all`, header)
+    //   .then((response)=>{
+    //     if(response.ok){
+    //       return response.json()
+    //     }else{
+    //       throw new Error(response.status + " went wrong")
+    //     }
+    //   })
+    //   .then((data)=>{
+    //     console.log(data)
+    //     this.categories = data
+    //     if(this.mode === 'edit'){
+    //       this.currCategories = this.categories.filter(cat=>cat.categoryType === this.currCategory.categoryType)
+    //
+    //
+    //     }else{
+    //       this.currCategories = this.categories.filter(cat=>cat.categoryType === 'EXPENSE')
+    //       this.selected = this.currCategories[0].categoryName
+    //
+    //     }
+    //   })
+    //   .catch((err)=>console.log(err))
+    //
+    //
+    //  }
   },
     mounted(){
-      this.fetchCategories()
+      if(this.mode === 'edit'){
+        this.currCategories = this.categories.filter(cat=>cat.categoryType === this.currCategory.categoryType)
+      }else{
+        this.currCategories = this.categories.filter(cat=>cat.categoryType === this.catMode)
+        this.selected = this.currCategories[0].categoryName
+
+      }
     }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
 <div>
-  <router-view :categories="categories" :catLength="categories.length" :transactions="transactions"  />
+    <router-view :categories="categories" :catLength="categories.length" :transactions="transactions" @update-categories="updateCategories" />
   </div>
 </template>
 
@@ -15,6 +15,15 @@ export default {
       return this.$store.getters.token != null && this.$store.getters.email != null
     }
   },
+  watch:{
+    isLoggedIn(){
+      console.log("Is Logged in? " + this.isLoggedIn)
+      if(this.isLoggedIn){
+        this.fetchCategories()
+        this.getTransactions()
+      }
+    }
+  },
   data(){
     return {
       categories: [],
@@ -23,8 +32,12 @@ export default {
   },
 
   created () {
-    this.fetchCategories(),
-    this.getTransactions()
+      if(this.isLoggedIn){
+        this.fetchCategories()
+        this.getTransactions()
+      }
+
+
   },
   methods:{
     fetchCategories(){
@@ -77,6 +90,9 @@ export default {
         this.transactions = data
       })
         .catch((err) => console.log(err))
+    },
+    updateCategories(data){
+      this.categories.unshift(data)
     }
   }
 

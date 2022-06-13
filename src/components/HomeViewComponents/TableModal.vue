@@ -11,7 +11,7 @@
         <p></p>
       </div>
 
-      <category-btn-group :mode="mode" :currCategory="startCategory" @select-category="updateCategory"></category-btn-group>
+      <category-btn-group :categories="categories" :mode="mode" :currCategory="startCategory" @select-category="updateCategory"></category-btn-group>
 
 
       <div class="md-form mb-2">
@@ -54,7 +54,7 @@ export default {
     ModalWrapper,
     Datepicker
   },
-  props: ['clickedTransaction', 'mode'],
+  props: ['clickedTransaction', 'mode', 'categories'],
   emits: ['update-balance', 'delete-transaction'],
   data () {
     return {
