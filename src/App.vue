@@ -12,13 +12,19 @@ export default {
   },
   computed:{
     isLoggedIn(){
-      return this.$store.getters.token != null && this.$store.getters.email != null
+      const isLoggedIn = this.$store.getters.token != null && this.$store.getters.email != null
+      console.log(isLoggedIn)
+      if(isLoggedIn){
+        this.fetchCategories()
+        this.getTransactions()
+      }
+      return isLoggedIn
     }
   },
   watch:{
     isLoggedIn(){
       console.log("Is Logged in? " + this.isLoggedIn)
-      if(this.isLoggedIn){
+     if(this.isLoggedIn){
         this.fetchCategories()
         this.getTransactions()
       }
@@ -29,15 +35,6 @@ export default {
       categories: [],
       transactions:[]
     }
-  },
-
-  created () {
-      if(this.isLoggedIn){
-        this.fetchCategories()
-        this.getTransactions()
-      }
-
-
   },
   methods:{
     fetchCategories(){
