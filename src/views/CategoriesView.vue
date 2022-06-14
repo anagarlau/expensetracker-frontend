@@ -12,7 +12,7 @@
         </div>
         <category-modal v-if="modal" @close-modal="closeModal" @update-categories="updateCategories"></category-modal>
       </div>
-      <table-categories v-if="catLength>0" :categories="categories"></table-categories>
+      <table-categories v-if="catLength>0" :categories="categories" @delete-category="deleteCategory"></table-categories>
     </div>
 
   </div>
@@ -51,6 +51,9 @@ export default {
      this.$emit('update-categories', data)
      this.closeModal()
 
+    },
+    deleteCategory(cat){
+      this.$emit('delete-category', cat)
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
 <div>
-    <router-view :categories="categories" :catLength="categories.length" :transactions="transactions" @update-categories="updateCategories" />
+    <router-view :categories="categories" :catLength="categories.length" :transactions="transactions" @update-categories="updateCategories" @delete-category="deleteCategory"/>
   </div>
 </template>
 
@@ -90,6 +90,9 @@ export default {
     },
     updateCategories(data){
       this.categories.unshift(data)
+    },
+    deleteCategory(delCat){
+      this.categories=this.categories.filter(cat=>cat.cid != delCat.cid)
     }
   }
 

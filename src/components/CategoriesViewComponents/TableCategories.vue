@@ -1,12 +1,12 @@
 <template>
   <div class="row justify-content-left">
-    <alert-delete v-if="alert" @close-alert="closeAlert"></alert-delete>
+    <alert-delete v-if="alert" @close-alert="closeAlert" :category="selectedCat" @delete-category="deleteCategory"></alert-delete>
     <div class="col-8">
       <table class="table table-hover" id="datatable" data-mdb-selectable="true" data-mdb-multi="true">
         <tbody>
-        <tr v-for="category in categories" :key="category.cid" @click="openAlert(category.cid)">
+          <tr v-for="category in categories" :key="category.cid">
 
-          <td><span><i class="bi bi-trash-fill"></i></span></td>
+          <td @click="openAlert(category)"><span><i class="bi bi-trash-fill"></i></span></td>
           <td><i :class="category.icon"></i> {{ category.categoryName }}</td>
           <td>{{ category.categoryType[0] + category.categoryType.substring(1).toLowerCase() }}</td>
           <td>@mdo</td>
@@ -22,22 +22,27 @@ import AlertDelete from '@/components/CategoriesViewComponents/AlertDelete'
 export default {
   name: 'TableCategories',
   components: {AlertDelete},
+  emits: ['delete-category'],
   props: ['categories'],
   data () {
     return {
        error: '',
        alert: false,
-       cidToDelete: null
+       selectedCat: null
     }
   },
   methods:{
-    openAlert(cid){
+    openAlert(cat){
       this.alert = true
-      this.cidToDelete=cid
-      console.log("meow " + this.cidToDelete)
+      this.selectedCat=cat
     },
     closeAlert(){
       this.alert = false
+      this.selectedCat=null
+    },
+    deleteCategory(cat){
+
+      this.$emit('delete-category', cat)
     }
   }
 
