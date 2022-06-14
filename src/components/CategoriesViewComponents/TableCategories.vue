@@ -2,7 +2,7 @@
   <div class="row justify-content-left">
     <alert-delete v-if="alert" @close-alert="closeAlert" :category="selectedCat" @delete-category="deleteCategory"></alert-delete>
     <div class="col-8">
-      <table class="table table-hover" id="datatable" data-mdb-selectable="true" data-mdb-multi="true">
+       <table class="table table-hover" id="datatable" data-mdb-selectable="true" data-mdb-multi="true">
         <tbody>
           <tr v-for="category in categories" :key="category.cid">
 

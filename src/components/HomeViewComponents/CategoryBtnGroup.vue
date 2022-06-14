@@ -46,48 +46,18 @@ export default {
        this.catMode === 'EXPENSE' ? this.isExpenseSelected = true : this.isExpenseSelected = false
        this.catMode === 'INCOME' ? this.isIncomeSelected = true : this.isIncomeSelected = false
        this.currCategories = this.categories.filter(cat => cat.categoryType === this.catMode)
+         .sort((c1, c2) => c1.categoryName.localeCompare(c2.categoryName, undefined, { sensitivity: 'base' }))
        console.log(this.currCategories)
      }
-    // fetchCategories(){
-    //   const header = {
-    //     method: 'GET',
-    //     mode: 'cors',
-    //     headers: {
-    //       Authorization: this.$store.getters.token,
-    //       'Content-Type': 'application/json'
-    //     }
-    //   }
-    //   fetch(`https://expensetracker22.herokuapp.com/api/v1/categories/all`, header)
-    //   .then((response)=>{
-    //     if(response.ok){
-    //       return response.json()
-    //     }else{
-    //       throw new Error(response.status + " went wrong")
-    //     }
-    //   })
-    //   .then((data)=>{
-    //     console.log(data)
-    //     this.categories = data
-    //     if(this.mode === 'edit'){
-    //       this.currCategories = this.categories.filter(cat=>cat.categoryType === this.currCategory.categoryType)
-    //
-    //
-    //     }else{
-    //       this.currCategories = this.categories.filter(cat=>cat.categoryType === 'EXPENSE')
-    //       this.selected = this.currCategories[0].categoryName
-    //
-    //     }
-    //   })
-    //   .catch((err)=>console.log(err))
-    //
-    //
-    //  }
+
   },
     mounted(){
       if(this.mode === 'edit'){
         this.currCategories = this.categories.filter(cat=>cat.categoryType === this.currCategory.categoryType)
+          .sort((c1, c2) => c1.categoryName.localeCompare(c2.categoryName, undefined, { sensitivity: 'base' }))
       }else{
         this.currCategories = this.categories.filter(cat=>cat.categoryType === this.catMode)
+          .sort((c1, c2) => c1.categoryName.localeCompare(c2.categoryName, undefined, { sensitivity: 'base' }))
         this.selected = this.currCategories[0].categoryName
 
       }

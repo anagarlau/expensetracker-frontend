@@ -1,6 +1,6 @@
 <template>
 <div>
-    <router-view :categories="categories" :catLength="categories.length" :transactions="transactions" @update-categories="updateCategories" @delete-category="deleteCategory"/>
+    <router-view :categories="categories" :catLength="categories.length" :transactions="filteredTransactions" @update-categories="updateCategories" @delete-category="deleteCategory"/>
   </div>
 </template>
 
@@ -19,7 +19,17 @@ export default {
         this.getTransactions()
       }
       return isLoggedIn
-    }
+    },
+      filteredTransactions(){
+      console.log( "In Computed Prop " + this.filterByName)
+      if(this.filterByName.length===0 || !this.filterByName) return this.transactions
+      else{
+       const arr =  this.transactions.filter(tr => tr.transactionDescription.toLowerCase().includes(this.filterByName))
+        console.log(arr)
+        return arr
+      }
+
+    },
   },
   watch:{
     isLoggedIn(){
@@ -28,12 +38,23 @@ export default {
         this.fetchCategories()
         this.getTransactions()
       }
+    },
+    filterByName(newVal){
+      console.log("Watcher for filter in App " + newVal)
+      this.filterByName=newVal
+
+    }
+  },
+  provide(){
+    return {
+      filter: this.filter
     }
   },
   data(){
     return {
       categories: [],
-      transactions:[]
+      transactions:[],
+      filterByName: ''
     }
   },
   methods:{
@@ -93,6 +114,17 @@ export default {
     },
     deleteCategory(delCat){
       this.categories=this.categories.filter(cat=>cat.cid != delCat.cid)
+      this.transactions = this.transactions.filter(tr=> tr.category.cid != delCat.cid)
+    },
+    filter(description){
+      console.log("DESCRIPTION " + description)
+      if(description.length=== 0 && !description){
+        this.filterByName=''
+      }else{
+        this.filterByName = description
+      }
+
+
     }
   }
 

@@ -2,7 +2,7 @@
   <transition name="modal" >
 <!--    class="modal" -->
       <div class="modal in modal-active" id="modal-clickable-rows" aria-hidden="true"  tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content mb-0 mt-0">
             <div class="modal-header text-center mb-0">
               <h4 class="modal-title mb-0 w-100 font-weight-bold"> {{header}} </h4>
