@@ -2,7 +2,7 @@
   <div class="row justify-content-center">
     <div class="col">
       <div class="form-outline mb-4">
-        <input v-model="name" @change="filter(name)"  @keyup="filter(name)" type="text" class="form-control" id="datatable-search-input" placeholder="Search by name"/>
+        <input v-model="name" @change="filter(name)"  @keyup="filter(name)" type="text" class="form-control" id="datatable-search-input" placeholder="Search by name or category name"/>
       </div>
 
     </div>

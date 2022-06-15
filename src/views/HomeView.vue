@@ -63,7 +63,7 @@ export default {
       modalMode: ''
     }
   },
-  props: ['catLength', 'categories', 'transactions'],
+  props: ['catLength', 'categories', 'transactions', 'originalTrs'],
   computed: {
     header () {
       return this.$store.getters.token
@@ -104,21 +104,24 @@ export default {
       console.log('EDIT MODE ' + this.modalMode)
       if (this.modalMode === 'edit') {
         console.log('Logik zum edieren')
-        const index = this.transactions.findIndex(o => o.id === toAdd.id)
-        console.log(index)
-        this.transactions.splice(index, 1, toAdd)
+        const indexT = this.transactions.findIndex(o => o.id === toAdd.id)
+        const indexO = this.originalTrs.findIndex(o => o.id === toAdd.id)
+        this.transactions.splice(indexT, 1, toAdd)
+        this.originalTrs.splice(indexO, 1, toAdd)
       }
       if (this.modalMode === 'post') {
         console.log('Logik zum hinzufuegen')
         this.transactions.unshift(toAdd)
-      }
+        this.originalTrs.unshift(toAdd)
+        }
       this.closeModal()
       this.modalMode = ''
     },
     deleteTransaction (id) {
-      const index = this.transactions.findIndex(o => o.id === id)
-      console.log(index)
-      this.transactions.splice(index, 1)
+      const indexT = this.transactions.findIndex(o => o.id === id)
+      const indexO = this.originalTrs.findIndex(o => o.id === id)
+      this.transactions.splice(indexT, 1)
+      this.originalTrs.splice(indexO, 1)
       this.closeModal()
       this.modalMode = ''
     }

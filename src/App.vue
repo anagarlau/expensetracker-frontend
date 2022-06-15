@@ -1,6 +1,6 @@
 <template>
 <div>
-    <router-view :categories="categories" :catLength="categories.length" :transactions="filteredTransactions" @update-categories="updateCategories" @delete-category="deleteCategory"/>
+    <router-view :categories="categories" :catLength="categories.length" :transactions="filteredTransactions" :originalTrs="transactions" @update-categories="updateCategories" @delete-category="deleteCategory"/>
   </div>
 </template>
 
@@ -22,11 +22,10 @@ export default {
     },
       filteredTransactions(){
       console.log( "In Computed Prop " + this.filterByName)
-      if(this.filterByName.length===0 || !this.filterByName) return this.transactions
+      if(this.filterByName.length===0 || !this.filterByName) return [...this.transactions]
       else{
-       const arr =  this.transactions.filter(tr => tr.transactionDescription.toLowerCase().includes(this.filterByName))
-        console.log(arr)
-        return arr
+       const byDescriptionAndName =  [...this.transactions].filter(tr =>tr.category.categoryName.toLowerCase().includes(this.filterByName) ||  tr.transactionDescription.toLowerCase().includes(this.filterByName))
+       return byDescriptionAndName
       }
 
     },
@@ -121,7 +120,7 @@ export default {
       if(description.length=== 0 && !description){
         this.filterByName=''
       }else{
-        this.filterByName = description
+        this.filterByName = description.toLowerCase()
       }
 
 
