@@ -16,6 +16,9 @@ export default {
       if (isLoggedIn) {
         this.fetchCategories()
         this.getTransactions()
+        this.filterByName=''
+        this.minDate=new Date(-8640000000000000)
+        this.maxDate = new Date(8640000000000000)
       }
       return isLoggedIn
     },
