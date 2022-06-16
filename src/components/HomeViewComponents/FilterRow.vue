@@ -1,17 +1,25 @@
 <template>
-  <div class="row justify-content-center">
-    <div class="col">
-      <div class="form-outline mb-4">
-        <input v-model="name" @change="filter(name)"  @keyup="filter(name)" type="text" class="form-control" id="datatable-search-input" placeholder="Search by name or category name"/>
-      </div>
+  <div class="row g-3">
+    <div class="col-md-3">
+      <div class="form-outline">
+        <input v-model="name" @change="filter(name, vonDate)"  @keyup="filter(name, vonDate)" type="text" class="form-control" id="datatable-search-input" placeholder="Search by name or category name"/>
+         </div>
 
     </div>
 
 
+    <div class="col-md-3 date">
+        <label class="col-form-label">Von</label>
+      <Datepicker name="vonDate"   format="dd-MM-yyyy" :enableTimePicker="false" v-model="vonDate"></Datepicker>
+     </div>
 
+    <div class="col-md-3 date">
+      <label class="col-form-label">Bis</label>
+      <Datepicker name="bisDate"  format="dd-MM-yyyy" :enableTimePicker="false" v-model="bisDate"></Datepicker>
+    </div>
 
-    <div class="col">
-      <div class="form-outline mb-4">
+    <div class="col-md-3">
+      <div class="form-outline mb-4 ms-2">
       <button type="button"  class="btn btn-primary btn-lg btn-floating round" @click="openPostModal">
         <i class="bi bi-plus-lg"></i>
       </button>
@@ -21,16 +29,27 @@
 </template>
 
 <script>
+import Datepicker from '@vuepic/vue-datepicker'
 export default {
+  components: {Datepicker},
   name: 'FilterRow',
-  inject: ['filter'],
+  inject: ['filter', 'setMinDate', 'setMaxDate'],
   data(){
     return{
-      name: ''
+      name: '',
+      vonDate: null,
+      bisDate: null
     }
   },
-  computed: {
-
+  watch: {
+      vonDate(newVal){
+         this.vonDate=newVal
+         this.setMinDate(this.vonDate)
+      },
+      bisDate(newVal){
+        this.bisDate = newVal
+        this.setMaxDate(this.bisDate)
+     }
   },
   methods:{
     openPostModal(){
@@ -44,5 +63,23 @@ export default {
 <style scoped>
 .round{
   border-radius: 80%;
+}
+
+.col-md-3{
+  margin:0;
+  padding:0
+}
+.date{
+  display: flex;
+}
+
+.date > label{
+  padding: 10px;
+  width:20%
+
+}
+
+.datepicker{
+  width: 80%;
 }
 </style>

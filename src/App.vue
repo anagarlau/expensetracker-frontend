@@ -1,63 +1,72 @@
 <template>
-<div>
-    <router-view :categories="categories" :catLength="categories.length" :transactions="filteredTransactions" :originalTrs="transactions" @update-categories="updateCategories" @delete-category="deleteCategory"/>
+  <div>
+    <router-view :categories="categories" :catLength="categories.length" :transactions="filteredTransactions"
+                 :originalTrs="transactions" @update-categories="updateCategories" @delete-category="deleteCategory"/>
   </div>
 </template>
 
 <script>
 /* eslint-disable */
 export default {
-  components: {
-
-  },
-  computed:{
-    isLoggedIn(){
+  components: {},
+  computed: {
+    isLoggedIn () {
       const isLoggedIn = this.$store.getters.token != null && this.$store.getters.email != null
       console.log(isLoggedIn)
-      if(isLoggedIn){
+      if (isLoggedIn) {
         this.fetchCategories()
         this.getTransactions()
       }
       return isLoggedIn
     },
-      filteredTransactions(){
-      console.log( "In Computed Prop " + this.filterByName)
-      if(this.filterByName.length===0 || !this.filterByName) return [...this.transactions]
-      else{
-       const byDescriptionAndName =  [...this.transactions].filter(tr =>tr.category.categoryName.toLowerCase().includes(this.filterByName) ||  tr.transactionDescription.toLowerCase().includes(this.filterByName))
-       return byDescriptionAndName
+    filteredTransactions () {
+      // console.log('Min date ' + this.minDate)
+      // console.log('Max Date ' + this.maxDate)
+      if (this.filterByName.length === 0 || !this.filterByName) {
+        return [...this.transactions]
+          .filter(tr => {
+            let date = new Date(tr.transactionDate)
+             return (date >= this.minDate && date <= this.maxDate)
+          })
+      } else {
+        const byDescriptionAndName = [...this.transactions]
+          .filter(tr => {
+            let date = new Date(tr.transactionDate)
+             return (tr.category.categoryName.toLowerCase().includes(this.filterByName) || tr.transactionDescription.toLowerCase().includes(this.filterByName)) &&
+              (date >= this.minDate && date <= this.maxDate)
+          })
+        return byDescriptionAndName
       }
 
     },
   },
-  watch:{
-    isLoggedIn(){
-      console.log("Is Logged in? " + this.isLoggedIn)
-     if(this.isLoggedIn){
+  watch: {
+    isLoggedIn () {
+      console.log('Is Logged in? ' + this.isLoggedIn)
+      if (this.isLoggedIn) {
         this.fetchCategories()
         this.getTransactions()
       }
-    },
-    filterByName(newVal){
-      console.log("Watcher for filter in App " + newVal)
-      this.filterByName=newVal
-
     }
   },
-  provide(){
+  provide () {
     return {
-      filter: this.filter
+      filter: this.filter,
+      setMinDate: this.setMinDate,
+      setMaxDate: this.setMaxDate
     }
   },
-  data(){
+  data () {
     return {
       categories: [],
-      transactions:[],
-      filterByName: ''
+      transactions: [],
+      filterByName: '',
+      maxDate: new Date(8640000000000000),
+      minDate: new Date(-8640000000000000)
     }
   },
-  methods:{
-    fetchCategories(){
+  methods: {
+    fetchCategories () {
       this.error = ''
       const header = {
         method: 'GET',
@@ -68,18 +77,18 @@ export default {
         }
       }
       fetch(`https://expensetracker22.herokuapp.com/api/v1/categories/all`, header)
-        .then((response)=>{
-          if(response.ok){
+        .then((response) => {
+          if (response.ok) {
             return response.json()
-          }else{
-            throw new Error(response.status + " went wrong")
+          } else {
+            throw new Error(response.status + ' went wrong')
           }
         })
-        .then((data)=>{
+        .then((data) => {
           console.log(data)
           this.categories = data
         })
-        .catch((err)=>{
+        .catch((err) => {
           console.log(err)
           this.error = 'Something went wrong on our side'
         })
@@ -108,21 +117,38 @@ export default {
       })
         .catch((err) => console.log(err))
     },
-    updateCategories(data){
+    updateCategories (data) {
       this.categories.unshift(data)
     },
-    deleteCategory(delCat){
-      this.categories=this.categories.filter(cat=>cat.cid != delCat.cid)
-      this.transactions = this.transactions.filter(tr=> tr.category.cid != delCat.cid)
+    deleteCategory (delCat) {
+      this.categories = this.categories.filter(cat => cat.cid != delCat.cid)
+      this.transactions = this.transactions.filter(tr => tr.category.cid != delCat.cid)
     },
-    filter(description){
-      console.log("DESCRIPTION " + description)
-      if(description.length=== 0 && !description){
-        this.filterByName=''
+    setMinDate(newMinDate){
+     // console.log("In SETTER incoming Min " + newMinDate)
+      if(!newMinDate){
+        this.minDate = new Date(-8640000000000000)
       }else{
-        this.filterByName = description.toLowerCase()
+        this.minDate = newMinDate
+      }
+     //  console.log("In SETTER minDate " + this.minDate)
+    },
+    setMaxDate(newMaxDate){
+     // console.log("In SETTER incoming Max  " + newMaxDate)
+      if(!newMaxDate){
+        this.maxDate = new Date(8640000000000000)
+      }else{
+        this.maxDate = newMaxDate
       }
 
+     // console.log("In SETTER maxDate " + this.maxDate)
+    },
+    filter (description) {
+        if (description.length === 0 && !description) {
+        this.filterByName = ''
+      } else {
+        this.filterByName = description.toLowerCase()
+      }
 
     }
   }
@@ -133,9 +159,9 @@ export default {
 <style>
 html, body {
   margin: 0;
-  height:100%;
-  width:100%;
-  padding:0;
+  height: 100%;
+  width: 100%;
+  padding: 0;
 }
 
 
