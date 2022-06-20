@@ -2,7 +2,7 @@
   <div class="row g-3">
     <div class="col-md-3">
       <div class="form-outline">
-        <input v-model="name" @change="filter(name, vonDate)"  @keyup="filter(name, vonDate)" type="text" class="form-control" id="datatable-search-input" placeholder="Search by name or category name"/>
+        <input v-model="name"   type="text" class="form-control" id="datatable-search-input" placeholder="Search by name or category name"/>
          </div>
 
     </div>
@@ -10,12 +10,12 @@
 
     <div class="col-md-3 date">
         <label class="col-form-label">Von</label>
-      <Datepicker name="vonDate"   format="dd-MM-yyyy" :enableTimePicker="false" v-model="vonDate"></Datepicker>
+      <Datepicker name="vonDate"   format="dd-MM-yyyy" :enableTimePicker="false" v-model="vonDate" ></Datepicker>
      </div>
 
     <div class="col-md-3 date">
       <label class="col-form-label">Bis</label>
-      <Datepicker name="bisDate"  format="dd-MM-yyyy" :enableTimePicker="false" v-model="bisDate"></Datepicker>
+      <Datepicker name="bisDate"  format="dd-MM-yyyy" :enableTimePicker="false" v-model="bisDate" ></Datepicker>
     </div>
 
     <div class="col-md-3">
@@ -49,12 +49,17 @@ export default {
       bisDate(newVal){
         this.bisDate = newVal
         this.setMaxDate(this.bisDate)
-     }
+     },
+      name(newVal){
+        this.name=newVal
+        this.filter(this.name)
+    }
   },
   methods:{
     openPostModal(){
       this.$emit('open-post', 'post')
     }
+
   }
 
 }

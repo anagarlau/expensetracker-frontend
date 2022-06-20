@@ -10,7 +10,7 @@
         <div class="navbar-nav">
           <p> {{ email }} </p>
 
-          <router-link class="nav-link"  to="/dashboard">Categories</router-link>
+          <router-link class="nav-link"  to="/dashboard" @click="resetFilters">Categories</router-link>
           <router-link class="nav-link" to="/transactions">Transactions</router-link>
 <!--          <a class="nav-link active" aria-current="page" href="#">Home</a>-->
 <!--          <a class="nav-link" href="#">About</a>-->
@@ -27,6 +27,7 @@
 
 <script>
 export default {
+  inject: ['resetFilters'],
     data(){
     return {
 

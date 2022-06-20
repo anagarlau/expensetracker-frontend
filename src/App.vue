@@ -23,31 +23,21 @@ export default {
       return isLoggedIn
     },
     filteredTransactions () {
-      // console.log('Min date ' + this.minDate)
-      // console.log('Max Date ' + this.maxDate)
-      if (this.filterByName.length === 0 || !this.filterByName) {
-        return [...this.transactions]
-          .filter(tr => {
-            let date = new Date(tr.transactionDate)
-             return (date >= this.minDate && date <= this.maxDate)
-          }).sort((a, b) => {
-            let da = new Date(a.transactionDate),
-              db = new Date(b.transactionDate);
-            return db - da;
-          })
-      } else {
-        const byDescriptionAndName = [...this.transactions]
+      //console.log("in computed filtered Transaction 1 " + this.filterByName)
+            const byDescriptionAndName = [...this.transactions]
           .filter(tr => {
             let date = new Date(tr.transactionDate)
              return (tr.category.categoryName.toLowerCase().includes(this.filterByName) || tr.transactionDescription.toLowerCase().includes(this.filterByName)) &&
               (date >= this.minDate && date <= this.maxDate)
           })
+
+        //console.log("in computed filtered Transaction 2 " + this.filterByName)
         return byDescriptionAndName.sort((a, b) => {
           let da = new Date(a.transactionDate),
             db = new Date(b.transactionDate);
           return db - da;
         })
-      }
+
 
     },
   },
@@ -64,7 +54,8 @@ export default {
     return {
       filter: this.filter,
       setMinDate: this.setMinDate,
-      setMaxDate: this.setMaxDate
+      setMaxDate: this.setMaxDate,
+      resetFilters: this.resetFilters
     }
   },
   data () {
@@ -72,8 +63,8 @@ export default {
       categories: [],
       transactions: [],
       filterByName: '',
-      maxDate: new Date(8640000000000000),
-      minDate: new Date(-8640000000000000),
+      maxDate: null,
+      minDate: null,
       root: process.env.VUE_APP_BACKEND_BASE_URL
     }
   },
@@ -186,7 +177,18 @@ export default {
         this.filterByName = description.toLowerCase()
       }
 
+    },
+    resetFilters(){
+      this.filterByName = ''
+      this.maxDate = new Date(8640000000000000)
+      this.minDate = new Date(-8640000000000000)
     }
+  },
+  mounted(){
+     this.filterByName = ''
+      this.maxDate = new Date(8640000000000000)
+      this.minDate = new Date(-8640000000000000)
+
   }
 
 }
