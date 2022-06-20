@@ -30,6 +30,10 @@ export default {
           .filter(tr => {
             let date = new Date(tr.transactionDate)
              return (date >= this.minDate && date <= this.maxDate)
+          }).sort((a, b) => {
+            let da = new Date(a.transactionDate),
+              db = new Date(b.transactionDate);
+            return db - da;
           })
       } else {
         const byDescriptionAndName = [...this.transactions]
@@ -38,7 +42,11 @@ export default {
              return (tr.category.categoryName.toLowerCase().includes(this.filterByName) || tr.transactionDescription.toLowerCase().includes(this.filterByName)) &&
               (date >= this.minDate && date <= this.maxDate)
           })
-        return byDescriptionAndName
+        return byDescriptionAndName.sort((a, b) => {
+          let da = new Date(a.transactionDate),
+            db = new Date(b.transactionDate);
+          return db - da;
+        })
       }
 
     },
@@ -65,7 +73,8 @@ export default {
       transactions: [],
       filterByName: '',
       maxDate: new Date(8640000000000000),
-      minDate: new Date(-8640000000000000)
+      minDate: new Date(-8640000000000000),
+      root: process.env.VUE_APP_BACKEND_BASE_URL
     }
   },
   methods: {
@@ -79,7 +88,7 @@ export default {
           'Content-Type': 'application/json'
         }
       }
-      fetch(`https://expensetracker22.herokuapp.com/api/v1/categories/all`, header)
+      fetch(this.root +`/api/v1/categories/all`, header)
         .then((response) => {
           if (response.ok) {
             return response.json()
@@ -100,7 +109,7 @@ export default {
     getTransactions () {
       console.log('Token ' + this.$store.getters.token)
       console.log('Email ' + this.$store.getters.email)
-      fetch(`https://expensetracker22.herokuapp.com/api/v1/transactions`,
+      fetch(this.root+`/api/v1/transactions`,
         {
           method: 'GET',
           mode: 'cors',

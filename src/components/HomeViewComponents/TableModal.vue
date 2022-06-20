@@ -62,7 +62,8 @@ export default {
       startCategory: this.clickedTransaction.category,
       date: new Date(this.clickedTransaction.transactionDate).toISOString().slice(0, 10),
       description: this.clickedTransaction.transactionDescription,
-      amount: this.clickedTransaction.transactionTotal
+      amount: this.clickedTransaction.transactionTotal,
+      root: process.env.VUE_APP_BACKEND_BASE_URL
     }
   },
   computed: {},
@@ -97,7 +98,7 @@ export default {
         },
         body: JSON.stringify(edited)
       }
-      fetch(`https://expensetracker22.herokuapp.com/api/v1/transactions/${id}`, options)
+      fetch(this.root+`/api/v1/transactions/${id}`, options)
         .then((res) => {
           if (res.ok) {
             return res.json()
@@ -122,7 +123,7 @@ export default {
           Authorization: this.$store.getters.token
         }
       }
-      fetch(`https://expensetracker22.herokuapp.com/api/v1/transactions/${id}`, options)
+      fetch(this.root+`/api/v1/transactions/${id}`, options)
         .then((res) => {
           if (res.ok) {
             return res.json

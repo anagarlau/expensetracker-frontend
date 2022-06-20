@@ -88,7 +88,7 @@ export default {
         },
         body: JSON.stringify(newCat)
       }
-      fetch(`https://expensetracker22.herokuapp.com/api/v1/categories`, options)
+      fetch(this.root+`/api/v1/categories`, options)
         .then((res) => {
           if (res.ok) {
             return res.json()
@@ -114,7 +114,8 @@ export default {
       categoryType: 'EXPENSE',
       isIncomeSelected: false,
       isExpenseSelected: true,
-      error: ''
+      error: '',
+      root: process.env.VUE_APP_BACKEND_BASE_URL
     }
   },
 

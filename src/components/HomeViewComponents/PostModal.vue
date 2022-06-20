@@ -52,7 +52,8 @@ export default {
       currCategory: null,
       date: new Date(),
       description: '',
-      amount: null
+      amount: null,
+      root: process.env.VUE_APP_BACKEND_BASE_URL
     }
   },
   methods: {
@@ -84,7 +85,7 @@ export default {
           },
           body: JSON.stringify(toPost)
         }
-        fetch(`https://expensetracker22.herokuapp.com/api/v1/${reqType}`, options)
+        fetch(this.root + `/api/v1/${reqType}`, options)
           .then((res) => {
             if (res.ok) {
               return res.json()
@@ -99,9 +100,6 @@ export default {
           })
       }
     }
-  },
-  mounted () {
-    console.log(this.mode)
   }
 }
 </script>

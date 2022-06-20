@@ -28,7 +28,8 @@ export default {
   emits: ['close-alert', 'delete-category'],
   data(){
     return {
-      error: ''
+      error: '',
+      root: process.env.VUE_APP_BACKEND_BASE_URL
     }
   },
   methods: {
@@ -45,7 +46,7 @@ export default {
           Authorization: this.$store.getters.token
         }
       }
-      fetch(`https://expensetracker22.herokuapp.com/api/v1/categories/${this.category.cid}`, options)
+      fetch(this.root+`/api/v1/categories/${this.category.cid}`, options)
         .then((res) => {
           if (res.ok) {
             return res.json

@@ -12,6 +12,7 @@ const store = createStore({
   // like data in a component - manages global state
   state () {
     return {
+      root: process.env.VUE_APP_BACKEND_BASE_URL,
       user: {
         token: localStorage.getItem('user') || null,
         email: localStorage.getItem('email') || null
@@ -39,7 +40,7 @@ const store = createStore({
   },
   actions: {
     async login (context, payload) {
-        const resp = await fetch(`https://expensetracker22.herokuapp.com/login`,
+        const resp = await fetch(this.state.root + `/login`,
         {
           method: 'POST',
           mode: 'cors',
@@ -64,7 +65,7 @@ const store = createStore({
       router.push("/")
       },
    async signup (context, payload) {
-      const resp = await fetch(`https://expensetracker22.herokuapp.com/register`,
+      const resp = await fetch(this.state.root+`/register`,
         {
           method: 'POST',
           mode: 'cors',
