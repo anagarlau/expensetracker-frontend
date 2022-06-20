@@ -68,8 +68,10 @@ export default {
       this.categoryType=category
      },
     postCategory(){
-      if(this.name.length === 0 || this.selectedIcon.length === 0 || this.categoryType.length === 0){
-        this.error = 'Please fill in all the fields'
+      this.error=''
+      if(this.name.length < 5 || this.selectedIcon.length === 0 || this.categoryType.length === 0){
+        this.error = 'Please provide a category name (at least 5 characters)'
+        return
       }
       const newCat = {
         categoryName: this.name,

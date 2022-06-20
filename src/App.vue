@@ -99,6 +99,18 @@ export default {
         .then((data) => {
           console.log(data)
           this.categories = data
+          this.categories.sort((a, b) => {
+            let fa = a.categoryName.toLowerCase(),
+              fb = b.categoryName.toLowerCase();
+
+            if (fa < fb) {
+              return -1;
+            }
+            if (fa > fb) {
+              return 1;
+            }
+            return 0;
+          })
         })
         .catch((err) => {
           console.log(err)
@@ -131,6 +143,18 @@ export default {
     },
     updateCategories (data) {
       this.categories.unshift(data)
+      this.categories.sort((a, b) => {
+        let catA = a.categoryName.toLowerCase(),
+          catB = b.categoryName.toLowerCase();
+
+        if (catA < catB) {
+          return -1;
+        }
+        if (catA > catB) {
+          return 1;
+        }
+        return 0;
+      })
     },
     deleteCategory (delCat) {
       this.categories = this.categories.filter(cat => cat.cid != delCat.cid)
