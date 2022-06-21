@@ -3,11 +3,10 @@
 
      <table-header-wrapper>
       <tr>
-        <th class="th-sm"> Col1</th>
-        <th class="th-sm">Col2</th>
-        <th class="th-sm">Col3</th>
-        <th class="th-sm">Col4</th>
-        <th class="th-sm">Col5</th>
+        <th class="th-sm">Description</th>
+        <th class="th-sm">Date</th>
+        <th class="th-sm">Amount</th>
+        <th class="th-sm">Category</th>
       </tr>
      </table-header-wrapper>
 

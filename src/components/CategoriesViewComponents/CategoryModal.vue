@@ -12,7 +12,8 @@
                     @click="closeModal"></button>
           </div>
           <div class="modal-body mt-0 mb-2" id="modal-body-clickable-rows">
-            <p v-if="error.length >0 "> {{error}} </p>
+            <div class="alert alert-warning" role="alert" v-if="error.length>0">{{ error }} </div>
+
             <div class="btn-group md-form mb-3 cat-btns" role="group">
               <button  class="btn btn-lg btn-outline-primary" :class="[isExpenseSelected ? 'active' : '']" @click="switchCategory('EXPENSE')">Expense</button>
               <button class="btn  btn-lg btn-outline-primary" :class="[isIncomeSelected ? 'active' : '']" @click="switchCategory('INCOME')">Income</button>

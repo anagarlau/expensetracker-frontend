@@ -9,8 +9,7 @@
           <td @click="openAlert(category)"><span><i class="bi bi-trash-fill"></i></span></td>
           <td><i :class="category.icon"></i> {{ category.categoryName }}</td>
           <td>{{ category.categoryType[0] + category.categoryType.substring(1).toLowerCase() }}</td>
-          <td>@mdo</td>
-        </tr>
+          </tr>
         </tbody>
       </table>
     </div>

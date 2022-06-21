@@ -200,6 +200,13 @@ html, body {
   height: 100%;
   width: 100%;
   padding: 0;
+  /*background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);*/
+  background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  /*Quelle: https://webgradients.com/*/
+}
+
+.alert{
+  background-color: #c3cfe2 ;
 }
 
 

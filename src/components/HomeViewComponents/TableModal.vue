@@ -2,13 +2,11 @@
 
   <modal-wrapper :mode="mode">
     <div class="modal-body text-center mb-1" id="modal-body-clickable-rows">
-      <p v-if="error.length>0">{{error}} </p>
+      <div class="alert" role="alert" v-if="error.length>0">{{ error }} </div>
       <div class="md-form mt-0 mb-2">
         <Datepicker position="left" menuClassName="dp-custom-menu" format="dd-MM-yyyy" :enableTimePicker="false"
                     v-model="date"></Datepicker>
-        <p> {{ date }}</p>
-        <p> </p>
-        <p></p>
+
       </div>
 
       <category-btn-group :categories="categories" :mode="mode" :currCategory="startCategory" @select-category="updateCategory"></category-btn-group>
@@ -79,8 +77,13 @@ export default {
     editTransaction (id) {
       this.error = ''
       console.log('Upon pressing edit')
-      if(this.description.length < 10 || this.amount === 0){
-        this.error = 'Description must be at least 10 characters long. Transaction amount must be greater than 0.'
+      if(this.description.length < 10){
+        this.error = 'Description must be at least 10 characters long.'
+        return
+      }
+
+      if(this.amount === 0 || !this.amount){
+        this.error = 'Amount must be greater than 0'
         return
       }
       const edited = {

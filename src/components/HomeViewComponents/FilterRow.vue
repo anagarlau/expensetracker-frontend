@@ -1,19 +1,19 @@
 <template>
   <div class="row g-3">
     <div class="col-md-3">
-      <div class="form-outline">
+      <div class="form-outline" v-if="trLength>0">
         <input v-model="name"   type="text" class="form-control" id="datatable-search-input" placeholder="Search by name or category name"/>
          </div>
 
     </div>
 
 
-    <div class="col-md-3 date">
+    <div class="col-md-3 date" v-if="trLength>0">
         <label class="col-form-label">Von</label>
       <Datepicker name="vonDate"   format="dd-MM-yyyy" :enableTimePicker="false" v-model="vonDate" ></Datepicker>
      </div>
 
-    <div class="col-md-3 date">
+    <div class="col-md-3 date" v-if="trLength>0">
       <label class="col-form-label">Bis</label>
       <Datepicker name="bisDate"  format="dd-MM-yyyy" :enableTimePicker="false" v-model="bisDate" ></Datepicker>
     </div>
@@ -34,6 +34,7 @@ export default {
   components: {Datepicker},
   name: 'FilterRow',
   inject: ['filter', 'setMinDate', 'setMaxDate'],
+  props: ['trLength'],
   data(){
     return{
       name: '',

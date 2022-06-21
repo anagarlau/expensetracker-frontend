@@ -1,7 +1,7 @@
 <template>
   <modal-wrapper :mode="mode">
     <div class="modal-body text-center mb-1">
-      <p v-if="error.length>0">{{ error }} </p>
+      <div class="alert" role="alert" v-if="error.length>0">{{ error }} </div>
       <div>
         <Datepicker position="left" menuClassName="dp-custom-menu" format="dd-MM-yyyy" :enableTimePicker="false"
                     v-model="date"></Datepicker>
@@ -64,8 +64,11 @@ export default {
     submitForm () {
       this.error = ''
       console.log(this.currCategory.categoryName)
-      if (this.currCategory === null || this.amount === null || this.amount <= 0 || this.description.length < 10 || this.date === null) {
-        this.error = 'Description must be at least 10 characters long. Transaction amount must be greater than 0.'
+      if (this.currCategory === null || this.amount === null || this.amount <= 0) {
+        this.error = 'Amount must  be greater than 0. '
+        return
+      }else if (this.description.length < 10 || this.date === null){
+        this.error+= "Description must be at least 10 chars long."
         return
       } else {
         console.log('Upon pressing post')

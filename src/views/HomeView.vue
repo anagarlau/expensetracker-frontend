@@ -4,13 +4,16 @@
 
   <div class="container justify-content-center">
     <h4><i class="bi bi-currency-euro"></i> {{ balance }}</h4>
+    <div v-if="catLength> 0 && originalTrs.length ===0"><p> Please post a transaction </p></div>
+    <div v-if="catLength === 0 && originalTrs.length ===0"><p> You currently have 0 categories. Please create some
+      first. </p></div>
     <div class="row justify-content-center" v-if="catLength > 0">
-      <filter-row v-if="catLength>0" @open-post="openPostModal"></filter-row>
+      <filter-row v-if="catLength>0" :trLength="originalTrs.length" @open-post="openPostModal"></filter-row>
 
       <post-modal :categories="categories" :mode="modalMode" v-if="postModal" @close-modal="closeModal"
                   @update-list="updateList"></post-modal>
     </div>
-    <div class="row justify-content-center" v-if="transactions.length > 0">
+    <div class="row justify-content-center" v-if="originalTrs.length > 0">
       <div class="col">
         <table-wrapper>
           <table-header></table-header>
@@ -23,9 +26,7 @@
         </table-wrapper>
       </div>
     </div>
-<!--    <div v-if="catLength> 0 && transactions.length ===0"><p> Please post a transaction </p></div>-->
-<!--    <div v-if="catLength === 0 && transactions.length ===0"><p> You currently have 0 categories. Please create some-->
-<!--      first </p></div>-->
+
   </div>
 
 </div>

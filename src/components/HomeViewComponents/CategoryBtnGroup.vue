@@ -1,6 +1,6 @@
 <template>
-  <p> {{mode}}</p>
-  <div class="md-form mb-2 btn-block" role="group">
+<!--  <p> {{mode}}</p>-->
+  <div class="md-form mt-2 mb-2 btn-block" role="group">
     <button  class="btn btn-lg btn-outline-primary" :class="[isExpenseSelected ? 'active' : '']" @click="switchCategory('EXPENSE')">Expense</button>
     <button class="btn  btn-lg btn-outline-primary" :class="[isIncomeSelected ? 'active' : '']" @click="switchCategory('INCOME')">Income</button>
   </div>
@@ -58,6 +58,11 @@ export default {
       }else{
         this.currCategories = this.categories.filter(cat=>cat.categoryType === this.catMode)
           .sort((c1, c2) => c1.categoryName.localeCompare(c2.categoryName, undefined, { sensitivity: 'base' }))
+        if(this.currCategories.length ===0){
+          this.catMode = 'INCOME'
+          this.currCategories = this.categories.filter(cat=>cat.categoryType === this.catMode)
+            .sort((c1, c2) => c1.categoryName.localeCompare(c2.categoryName, undefined, { sensitivity: 'base' }))
+        }
         this.selected = this.currCategories[0].categoryName
 
       }
