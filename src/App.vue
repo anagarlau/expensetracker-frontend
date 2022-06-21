@@ -209,5 +209,7 @@ html, body {
   background-color: #c3cfe2 ;
 }
 
-
+.navbar{
+  padding-right: 2%;
+}
 </style>

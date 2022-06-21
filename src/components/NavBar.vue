@@ -20,8 +20,11 @@
 
       </div>
     </div>
+    <div class="d-flex">
+      <button @click="logout" class="btn btn-primary"
+              style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"> Logout</button>
+    </div>
 
-    <button @click="logout"> Logout</button>
   </nav>
 </template>
 
@@ -50,4 +53,5 @@ export default {
 .active {
   text-decoration-line: underline;
 }
+
 </style>

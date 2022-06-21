@@ -61,11 +61,11 @@ export default {
 
 <style scoped>
 .round {
-  background-color: pink;
+  /*background-color: pink;*/
   border-radius: 60%;
 }
 
 .round:hover {
-  background-color: green;
+  background-color: #c3cfe2;
 }
 </style>
