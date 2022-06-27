@@ -19,7 +19,7 @@ B. /home:
 Funktionalität:
 - CRUD für Erstellung von Transaktionen je nach Oberkategorie (income, expense) und Unterkategorien (vom User erstellt, s. unten) im Modal.
     1. Create durch Button rechts
-        2. Read durch Klick in der Tabellenzeile
+    2. Read durch Klick in der Tabellenzeile
     3. Update durch Klick in der Tabellenzeile, neue Eintraege und Klick auf "Edit" Button
     4. Delete durch Klick in der Tabellenzeile und Klick auf "Delete" Button
 
