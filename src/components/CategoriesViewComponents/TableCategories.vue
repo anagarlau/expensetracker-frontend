@@ -4,11 +4,11 @@
     <div class="col-8">
        <table class="table table-hover" id="datatable" data-mdb-selectable="true" data-mdb-multi="true">
         <tbody>
-          <tr v-for="category in categories" :key="category.cid">
+          <tr v-for="category in categories" :key="category.cid" class="catRow">
 
           <td @click="openAlert(category)"><span><i class="bi bi-trash-fill"></i></span></td>
-          <td><i :class="category.icon"></i> {{ category.categoryName }}</td>
-          <td>{{ category.categoryType[0] + category.categoryType.substring(1).toLowerCase() }}</td>
+          <td class="catName"><i :class="category.icon"></i> {{ category.categoryName }}</td>
+          <td class="catType">{{ category.categoryType[0] + category.categoryType.substring(1).toLowerCase() }}</td>
           </tr>
         </tbody>
       </table>

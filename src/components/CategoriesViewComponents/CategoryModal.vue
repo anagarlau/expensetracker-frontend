@@ -8,7 +8,7 @@
         <div class="modal-content mb-2">
           <div class="modal-header text-center mb-0">
             <h5 class="modal-title mb-0 w-100 font-weight-bold">Add a category</h5>
-            <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"
+            <button id="close" type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"
                     @click="closeModal"></button>
           </div>
           <div class="modal-body mt-0 mb-2" id="modal-body-clickable-rows">
@@ -36,7 +36,7 @@
 
           </div>
           <div class="modal-footer justify-content-center">
-            <button type="button" class="btn btn-outline-primary" @click="postCategory">
+            <button type="button" id="post"  class="btn btn-outline-primary" @click="postCategory">
               Post
               <i class="fa fa-arrow-right ms-2"></i>
             </button>
