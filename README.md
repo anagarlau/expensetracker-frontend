@@ -11,14 +11,14 @@ Routes: /auth, /home, /dashboard
 
 A. /auth
 
-Funktionalität:
+- Funktionalität:
 Auth mit Spring Security und JWT Tokens [hab's schnell und immer wieder bereut... ]
 Register und Login - Jegliche Kontoupdates sind ausgeschlossen
 
 
 B. /home:
 
-Funktionalität:
+- Funktionalität:
 
 - CRUD für Erstellung von Transaktionen je nach Oberkategorie (income, expense) und Unterkategorien (vom User erstellt, s. unten) im Modal.
     1. Create durch Button rechts
@@ -32,7 +32,7 @@ Funktionalität:
 
 C. /dashboard: CRD für Kategorien
 
-Funktionalität:
+- Funktionalität:
 
     1. Create durch Button links
     2. Read nur als Tabelleneintrag
