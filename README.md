@@ -33,6 +33,7 @@ Funktionalität:
 C. /dashboard: CRD für Kategorien
 
 Funktionalität:
+
     1. Create durch Button links
     2. Read nur als Tabelleneintrag
     3. Delete durch Klick auf das Abfallkorb-Icon in der jeweiligen Zeile + Alert für Bestätigung
