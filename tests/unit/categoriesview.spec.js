@@ -102,7 +102,7 @@ describe('Tests in CategoriesView', () => {
       }
     })
 
-    console.log(wrapper.vm.alert)
+
     const row = wrapper.find(".alert")
     row.trigger('click')
     expect(row).toBeTruthy()
