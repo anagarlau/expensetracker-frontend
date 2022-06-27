@@ -7,7 +7,7 @@
                      <button @click="closeAlert" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center mb-0 mt-0">
-                    <p v-if="error.length===0">Are you sure you want to delete category <i :class="category.icon"> </i> {{category.categoryName}} ?</p>
+                    <p id="confirm" v-if="error.length===0">Are you sure you want to delete category <i :class="category.icon"> </i> {{category.categoryName}} ?</p>
                     <p v-else class="alert alert-warning"> {{error}}</p>
                 </div>
               <div class="modal-footer justify-content-center mt-0">

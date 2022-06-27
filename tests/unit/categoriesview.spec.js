@@ -6,17 +6,19 @@ import TableCategories from '@/components/CategoriesViewComponents/TableCategori
 import AlertDelete from '@/components/CategoriesViewComponents/AlertDelete'
 import { render } from 'vue'
 import CategoryModal from '@/components/CategoriesViewComponents/CategoryModal'
+import App from '@/App'
+import Al from '@vuepic/vue-datepicker'
 
 
-describe('Components Categories.vue', () => {
-  it('abc', () => {
+describe('Tests in CategoriesView', () => {
+  it('tests if NavBar in View', () => {
 
     const wrapper = shallowMount(CategoriesView)
     const navbar = wrapper.findComponent(NavBar)
     expect(navbar.exists()).toBeTruthy()
   })
 
-  it('count category loop', () => {
+  it('counts numbers of rows in Component TableCategories', () => {
 
     const wrapper = mount(TableCategories, {
       propsData:{
@@ -41,7 +43,7 @@ describe('Components Categories.vue', () => {
     expect(rows.length).toBe(2)
   })
 
-  it('Test Category Table Row', () => {
+  it('Test if Table Row properly displays props', () => {
     const cat = {
       categoryName: "Abracadrabra",
       categoryType: "INCOME",
@@ -67,18 +69,49 @@ describe('Components Categories.vue', () => {
     const expectedText = cat.categoryType[0] + cat.categoryType.substring(1).toLowerCase()
     expect(description.text()).toBe(expectedText)
     expect(name.text()).toBe(cat.categoryName)
+
   })
 
-  it('Row Click Event', () => {
+
+
+  it('Select Income Btn in Modal sets active class on Button', async () => {
     const wrapper = mount(CategoryModal)
-    const postButton = wrapper.find('#post')
-    const spy = jest.spyOn(wrapper.vm, 'postCategory')
-    postButton.trigger('click')
-    expect(spy).toHaveBeenCalled()
+    expect(wrapper.find('#income').classes()).not.toContain('active')
+    expect(wrapper.find('#expense').classes()).toContain('active')
 
+    await wrapper.find('#income').trigger('click')
 
+   expect(wrapper.find('#expense').classes()).not.toContain('active')
+    expect(wrapper.find('#income').classes()).toContain('active')
   })
 
+  it('Test if Alert delete opens upon click event on row', () => {
+    const wrapper = shallowMount(TableCategories, {
+      propsData:{
+        alert: false,
+        selectedCat: null,
+        categories: [
+
+          {
+            categoryName: "Abracadabra",
+            categoryType: "INCOME",
+            cid: 30,
+            icon: "bi bi-headphones"
+          }
+        ]
+      }
+    })
+
+    console.log(wrapper.vm.alert)
+    const row = wrapper.find(".alert")
+    row.trigger('click')
+    expect(row).toBeTruthy()
+    expect(wrapper.vm.alert).toBe(true)
+    expect(wrapper.vm.selectedCat.categoryName).toBe('Abracadabra')
+    const alert = wrapper.find({ref: '#alertDelete'})
+    expect(alert).toBeTruthy()
+
+  })
 
 })
 

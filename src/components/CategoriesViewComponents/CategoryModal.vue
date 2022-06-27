@@ -15,8 +15,8 @@
             <div class="alert alert-warning" role="alert" v-if="error.length>0">{{ error }} </div>
 
             <div class="btn-group md-form mb-3 cat-btns" role="group">
-              <button  class="btn btn-lg btn-outline-primary" :class="[isExpenseSelected ? 'active' : '']" @click="switchCategory('EXPENSE')">Expense</button>
-              <button class="btn  btn-lg btn-outline-primary" :class="[isIncomeSelected ? 'active' : '']" @click="switchCategory('INCOME')">Income</button>
+              <button id="expense"  class="btn btn-lg btn-outline-primary" :class="[isExpenseSelected ? 'active' : '']" @click="switchCategory('EXPENSE')">Expense</button>
+              <button id="income" class="btn  btn-lg btn-outline-primary" :class="[isIncomeSelected ? 'active' : '']" @click="switchCategory('INCOME')">Income</button>
             </div>
 
             <div class="md-form mb-2">
