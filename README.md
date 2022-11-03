@@ -1,6 +1,6 @@
 # expensetracker-frontend
 
-https://expensetracker22-frontend.herokuapp.com/
+
 
 [![CI](https://github.com/anagarlau/expensetracker-frontend/actions/workflows/ci.yml/badge.svg)](https://github.com/anagarlau/expensetracker-frontend/actions/workflows/ci.yml)
 
