@@ -13,7 +13,7 @@ A. /auth
 
 - Funktionalität:
 
-  1. Auth mit Spring Security und JWT Tokens [hab's schnell und immer wieder bereut... ]
+  1. Auth mit Spring Security und JWT Tokens 
   2. Register und Login - Jegliche Kontoupdates sind ausgeschlossen
 
 
